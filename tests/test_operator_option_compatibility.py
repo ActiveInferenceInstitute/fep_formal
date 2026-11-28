@@ -141,7 +141,7 @@ def test_accept_only_delegates_without_template_lock_or_hydration(monkeypatch):
             "--pdf-dir",
             str(root / "output/pdf"),
             "--manuscript-dir",
-            str(root / "manuscript"),
+            str(root / "docs" / "manuscript"),
             "--receipt",
             str(root / module.RECEIPT_PATH),
         ]

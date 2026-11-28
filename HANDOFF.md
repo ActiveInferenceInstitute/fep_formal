@@ -220,7 +220,7 @@ The canonical Python-acceptance command runs the exact collected suite and
 atomically writes `output/pytest.xml`, `output/coverage.xml`, and
 `output/python-acceptance.json`; a raw `pytest` run is a useful development
 gate but is not a release receipt. Catalogue/manuscript generation precedes
-that receipt because `manuscript/manuscript_vars.yaml` owns the canonical test
+that receipt because `docs/manuscript/manuscript_vars.yaml` owns the canonical test
 count. Browser capture follows the final renderer sources and atlas/dashboard
 bytes. The two archive builds must remain byte-identical and independently
 validate against the live checkout before publication.
@@ -245,7 +245,7 @@ chapter edited without a fresh local render leaves CI red there.
 
 One residue case is expected local behavior, not a defect. The committed
 receipt `docs/render-acceptance.json` binds the generated
-`manuscript/09z_unified_formalism_catalogue.md` (`.gitignore:58`). CI's
+`docs/manuscript/09z_unified_formalism_catalogue.md` (`.gitignore:58`). CI's
 render lane validates a fresh receipt in-run but cannot commit it back, so
 the committed receipt ages against local state. A status run that reports
 `render_receipt_freshness: stale` naming ONLY
@@ -262,7 +262,7 @@ local-only it blocks nothing else. The
 preparation, both checker diagnoses, and the render prerequisites.
 
 A REAL defect looks different: stale findings naming committed manuscript
-sources (chapters, the preamble, or other tracked `manuscript/*.md` files)
+sources (chapters, the preamble, or other tracked `docs/manuscript/*.md` files)
 mean the shipped render predates maintained text and must not be treated as
 current until `scripts/render_publication.py` re-runs over a real render and
 rewrites the receipt.

@@ -1313,7 +1313,7 @@ def _capture_render_outputs(root: Path) -> tuple[str, ...]:
         ),
         *(
             f"output/manuscript/{p.name}"
-            for p in manuscript_source_files(root / "manuscript")
+            for p in manuscript_source_files(root / "docs" / "manuscript")
         ),
     )
 
@@ -1350,12 +1350,12 @@ def plan_publication_capture(
     template = Path(template_root).resolve()
     epoch = _source_date_epoch(source_date_epoch)
     for name in ("manuscript_vars.yaml", UNIFIED_FORMALISM_CATALOGUE_FILENAME):
-        if not (root / "manuscript" / name).is_file():
+        if not (root / "docs" / "manuscript" / name).is_file():
             raise ReleaseBundleError(
                 "capture requires existing paired manuscript projections; "
                 "run fep-formal catalogue before planning"
             )
-        _capture_regular_file(root / "manuscript" / name)
+        _capture_regular_file(root / "docs" / "manuscript" / name)
     # Enumerating owned files is read-only. Missing inputs fail when their stage
     # consumes them, so upstream receipt producers can run in topological order.
     common = tuple(
@@ -1365,7 +1365,7 @@ def plan_publication_capture(
         )
     )
     test_paths = _capture_directory_paths(root / "tests")
-    manuscript_paths = _capture_directory_paths(root / "manuscript")
+    manuscript_paths = _capture_directory_paths(root / "docs" / "manuscript")
     template_links = _capture_template_links(template, root)
     template_paths = _capture_directory_paths(template, resource_links=template_links)
     if not (template / "scripts/pipeline/stage_03_render.py").is_file():
@@ -1410,7 +1410,7 @@ def plan_publication_capture(
     )
     collection_cache = paths("output/.cache/tests_collected.json")
     manuscript_projections = paths(
-        "manuscript/manuscript_vars.yaml",
+        "docs/manuscript/manuscript_vars.yaml",
         f"manuscript/{UNIFIED_FORMALISM_CATALOGUE_FILENAME}",
     )
     citation = paths("CITATION.cff")
@@ -1450,7 +1450,7 @@ def plan_publication_capture(
             ),
             render,
             3600,
-            ((root / "manuscript", manuscript_paths), (template, template_paths)),
+            ((root / "docs" / "manuscript", manuscript_paths), (template, template_paths)),
         ),
         stage(
             "python",
@@ -1467,7 +1467,7 @@ def plan_publication_capture(
             ),
             python,
             10800,
-            ((root / "tests", test_paths), (root / "manuscript", manuscript_paths)),
+            ((root / "tests", test_paths), (root / "docs" / "manuscript", manuscript_paths)),
         ),
         stage("numerical", (), common, numerical, 120),
         stage(
@@ -1505,7 +1505,7 @@ def plan_publication_capture(
             3600,
             (
                 (root / "tests", test_paths),
-                (root / "manuscript", manuscript_paths),
+                (root / "docs" / "manuscript", manuscript_paths),
                 (template, template_paths),
             ),
         ),
@@ -1626,7 +1626,7 @@ def _publication_capture_worker(
                 )
             )
             actual_variables = yaml.safe_load(
-                _capture_regular_file(root / "manuscript/manuscript_vars.yaml")
+                _capture_regular_file(root / "docs/manuscript/manuscript_vars.yaml")
             )
             actual_source = (
                 actual_variables.get("source")
@@ -1661,7 +1661,7 @@ def _publication_capture_worker(
     elif stage == "render":
         errors = (
             *receipt_defects(
-                root / "docs/render-acceptance.json", manuscript_dir=root / "manuscript"
+                root / "docs/render-acceptance.json", manuscript_dir=root / "docs" / "manuscript"
             ),
             *bundle._rendered_manuscript_errors(root),
             *bundle.publication_manuscript_errors(root, source_date_epoch=source_epoch),

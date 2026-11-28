@@ -2,9 +2,9 @@
 """Render the canonical graphical-abstract asset for the manuscript.
 
 The abstract is an authored image asset whose bytes are pinned by the
-``sha256`` in ``manuscript/config.yaml``; this wrapper is its producer (see
+``sha256`` in ``docs/manuscript/config.yaml``; this wrapper is its producer (see
 ``fep_formal.output.graphical_abstract``).  Run it whenever the art changes,
-then record the new digest in ``manuscript/config.yaml`` -- the validator
+then record the new digest in ``docs/manuscript/config.yaml`` -- the validator
 fails closed on any mismatch, so a stale pin cannot ship.  The copy pass in
 ``scripts/build_manuscript_figures.py`` then republishes the asset under
 ``output/figures/`` for the combined render.

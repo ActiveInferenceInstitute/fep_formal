@@ -103,8 +103,8 @@ def read_versions(root: Path) -> dict[str, str | None]:
             "_CANONICAL_RELEASE_VERSION",
         ),
         "CITATION.cff": _nested(_yaml(root, "CITATION.cff"), "version"),
-        "manuscript/config.yaml": _nested(
-            _yaml(root, "manuscript/config.yaml"), "paper", "version"
+        "docs/manuscript/config.yaml": _nested(
+            _yaml(root, "docs/manuscript/config.yaml"), "paper", "version"
         ),
         "config/settings.yaml": _nested(
             _yaml(root, "config/settings.yaml"), "project", "version"
@@ -117,8 +117,8 @@ def read_versions(root: Path) -> dict[str, str | None]:
 def read_dates(root: Path) -> dict[str, str | None]:
     return {
         "CITATION.cff": _nested(_yaml(root, "CITATION.cff"), "date-released"),
-        "manuscript/config.yaml": _nested(
-            _yaml(root, "manuscript/config.yaml"), "paper", "date"
+        "docs/manuscript/config.yaml": _nested(
+            _yaml(root, "docs/manuscript/config.yaml"), "paper", "date"
         ),
         "release_bundle/_constants.py": _assignment(
             root,
@@ -184,7 +184,7 @@ def bump(root: Path, version: str, date: str) -> tuple[str, ...]:
             (r"^version:.*$", f"version: {qv}"),
             (r"^date-released:.*$", f"date-released: {qd}"),
         ],
-        "manuscript/config.yaml": [
+        "docs/manuscript/config.yaml": [
             (r"^(  version:\s*).*$", rf"\g<1>{qv}"),
             (r"^(  date:\s*).*$", rf"\g<1>{qd}"),
         ],

@@ -227,12 +227,12 @@ def _omit_manifested_member(contents: dict[str, bytes], omitted: str) -> None:
 
 
 def _minimal_manuscript(project_root: Path) -> None:
-    manuscript = project_root / "manuscript"
+    manuscript = project_root / "docs" / "manuscript"
     rendered = project_root / "output" / "manuscript"
     manuscript.mkdir(parents=True)
     rendered.mkdir(parents=True)
-    shutil.copy2(PROJ / "manuscript/config.yaml", manuscript / "config.yaml")
-    asset = (PROJ / "manuscript/assets/graphical-abstract.png").read_bytes()
+    shutil.copy2(PROJ / "docs/manuscript/config.yaml", manuscript / "config.yaml")
+    asset = (PROJ / "docs/manuscript/assets/graphical-abstract.png").read_bytes()
     (manuscript / "assets").mkdir()
     (manuscript / "assets/graphical-abstract.png").write_bytes(asset)
     (rendered / "assets").mkdir()
@@ -279,7 +279,7 @@ def _minimal_manuscript(project_root: Path) -> None:
 
 def _write_release_metadata_fixture(project_root: Path) -> None:
     (project_root / ".aii").mkdir(parents=True, exist_ok=True)
-    (project_root / "manuscript").mkdir(parents=True, exist_ok=True)
+    (project_root / "docs" / "manuscript").mkdir(parents=True, exist_ok=True)
     (project_root / "src/fep_formal").mkdir(parents=True, exist_ok=True)
     (project_root / "config").mkdir(parents=True, exist_ok=True)
     (project_root / "LICENSE").write_text(
@@ -311,7 +311,7 @@ def _write_release_metadata_fixture(project_root: Path) -> None:
         "  url: https://doi.org/10.5281/zenodo.23607007\n",
         encoding="utf-8",
     )
-    (project_root / "manuscript/config.yaml").write_text(
+    (project_root / "docs/manuscript/config.yaml").write_text(
         "paper:\n"
         '  version: "2.1.0"\n'
         '  date: "2026-10-24"\n'

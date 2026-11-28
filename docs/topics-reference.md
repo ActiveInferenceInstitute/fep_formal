@@ -20,7 +20,7 @@ Each view answers a different question:
 | How do selected finite laws behave numerically? | [Interactive formal-kernel dashboard](formal-kernel-dashboard.html) or [static SVG](formal-kernel-dashboard.svg) |
 | Which proofs genuinely compose stable topic namespaces? | Manifested leaves under [`src/fep_formal/formal/compositions/`](../src/fep_formal/formal/compositions/); [`composed.lean`](../src/fep_formal/formal/composed.lean) imports them |
 | Which shared finite carriers and laws support those proofs? | [Formal-kernel methods](formal-kernel-methods.md) and [`src/fep_formal/formal/`](../src/fep_formal/formal/) |
-| What exact theorem statements and proofs appear in the publication appendix? | Generated `manuscript/09z_unified_formalism_catalogue.md` |
+| What exact theorem statements and proofs appear in the publication appendix? | Generated `docs/manuscript/09z_unified_formalism_catalogue.md` |
 | Did the current bytes compile? | A validated native receipt, normally `output/native-verification.json` |
 
 `config/topics.yaml` and `src/fep_formal/data/topics.yaml` are byte-identical
@@ -97,7 +97,7 @@ optimization as broader claims. Parallel seven-topic families add finite
 policy trees, native blanket transfer, scalar exponential-family dual geometry,
 and an exact two-state continuous-time semigroup. Their scope and non-vacuity
 contracts are summarized in
-[`manuscript/04i_formalism_catalogue_155.md`](../manuscript/04i_formalism_catalogue_155.md).
+[`docs/manuscript/04i_formalism_catalogue_155.md`](manuscript/04i_formalism_catalogue_155.md).
 Historical proxy and gap values remain part of the schema so older receipts
 and future regressions stay interpretable.
 

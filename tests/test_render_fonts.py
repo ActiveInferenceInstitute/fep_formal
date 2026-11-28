@@ -32,12 +32,12 @@ DROPPED_IN_THE_AUDITED_RENDER = (0x2098, 0x2096, 0x1D50, 0x209A, 0x1D62, 0x1D9C)
 
 
 def test_the_dropped_codepoints_are_in_the_derived_requirement() -> None:
-    required = set(code_font_codepoints(PROJECT_ROOT / "manuscript"))
+    required = set(code_font_codepoints(PROJECT_ROOT / "docs" / "manuscript"))
     assert set(DROPPED_IN_THE_AUDITED_RENDER) <= required
 
 
 def test_the_preamble_selects_a_face_for_code_and_for_prose() -> None:
-    fonts = declared_fonts(PROJECT_ROOT / "manuscript" / "preamble.md")
+    fonts = declared_fonts(PROJECT_ROOT / "docs" / "manuscript" / "preamble.md")
     assert fonts["mono"] == "JuliaMono"
     assert fonts["main"]
 
@@ -75,8 +75,8 @@ def test_the_selected_faces_cover_this_manuscript() -> None:
     exact dropped-glyph set is pinned instead of skipping behind a CI
     conditional. Only a host with no fontconfig probe at all may skip.
     """
-    fonts = declared_fonts(PROJECT_ROOT / "manuscript" / "preamble.md")
-    required = code_font_codepoints(PROJECT_ROOT / "manuscript")
+    fonts = declared_fonts(PROJECT_ROOT / "docs" / "manuscript" / "preamble.md")
+    required = code_font_codepoints(PROJECT_ROOT / "docs" / "manuscript")
     try:
         mono_missing = uncovered_codepoints(fonts["mono"], required)
     except FontProbeError:
@@ -142,7 +142,7 @@ def test_an_unprobeable_host_fails_closed(monkeypatch: pytest.MonkeyPatch) -> No
 
 
 def test_the_committed_requirement_matches_the_sources() -> None:
-    appendix = PROJECT_ROOT / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
+    appendix = PROJECT_ROOT / "docs" / "manuscript" / UNIFIED_FORMALISM_CATALOGUE_FILENAME
     if not appendix.is_file():
         pytest.skip(
             "generated appendix is missing; run `uv run fep-formal catalogue` first"

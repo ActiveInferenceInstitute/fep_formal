@@ -116,10 +116,10 @@ uv run python scripts/build_manuscript_figures.py --check
 ```
 
 `build_graphical_abstract.py` is the graphical abstract's producer: it renders
-`manuscript/assets/graphical-abstract.png` (the sha256-pinned canonical asset)
+`docs/manuscript/assets/graphical-abstract.png` (the sha256-pinned canonical asset)
 from `fep_formal.output.graphical_abstract` -- byte-deterministic, 8-bit RGB,
 no external rasterizer. Run it when the art changes, then record the new
-digest in `manuscript/config.yaml`; `--check` validates the committed asset
+digest in `docs/manuscript/config.yaml`; `--check` validates the committed asset
 against that pin without writing. The copy pass above republishes the asset
 under `output/figures/` for the combined render:
 
@@ -185,8 +185,8 @@ uv run python scripts/build_render_fonts.py --check
 ```
 
 `fep-formal catalogue` writes the generated appendix
-`manuscript/09z_unified_formalism_catalogue.md`, the typed-variable projection
-`manuscript/manuscript_vars.yaml`, and the catalogue figures under
+`docs/manuscript/09z_unified_formalism_catalogue.md`, the typed-variable projection
+`docs/manuscript/manuscript_vars.yaml`, and the catalogue figures under
 `output/figures/`. All three are gitignored local build products, so a new
 worktree has none of them. The atlas and dashboard projections are committed,
 so they only need `--check`; if that fails, the regeneration is a tracked

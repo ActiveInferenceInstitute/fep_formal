@@ -1774,7 +1774,7 @@ def test_resume_reinvocation_cannot_acknowledge_a_rejected_render(
 def _render_candidate(root: Path) -> Path:
     from fep_formal.output.render_log import build_acceptance_receipt
 
-    manuscript = root / "manuscript"
+    manuscript = root / "docs" / "manuscript"
     manuscript.mkdir()
     (manuscript / "01_abstract.md").write_text("A named scientific model.\n")
     (manuscript / "09z_unified_formalism_catalogue.md").write_text("# Catalogue\n")
@@ -1837,9 +1837,9 @@ def test_render_barrier_rejects_invalid_receipts_before_reproduction(
     elif defect == "malformed":
         receipt.write_text("invalid JSON")
     elif defect == "stale_config":
-        (tmp_path / "manuscript/config.yaml").write_text("title: Changed fixture\n")
+        (tmp_path / "docs/manuscript/config.yaml").write_text("title: Changed fixture\n")
     elif defect == "stale_references":
-        (tmp_path / "manuscript/references.bib").write_text(
+        (tmp_path / "docs/manuscript/references.bib").write_text(
             "% Changed reference input.\n"
         )
     elif defect == "unnumbered_equations":
@@ -1847,7 +1847,7 @@ def test_render_barrier_rejects_invalid_receipts_before_reproduction(
         payload["checks"]["unnumbered_equations"] = 1
         receipt.write_text(json.dumps(payload))
     else:
-        (tmp_path / "manuscript/01_abstract.md").write_text("Changed model.\n")
+        (tmp_path / "docs/manuscript/01_abstract.md").write_text("Changed model.\n")
 
     def forbidden(root: Path) -> tuple[str, ...]:
         raise AssertionError("invalid acceptance launched publication reproduction")
@@ -1883,7 +1883,7 @@ def test_render_barrier_binds_acceptance_and_independent_reproduction(
                 "publication manuscript member is stale: output/manuscript/fep.pdf",
             )
         if defect == "source_race":
-            (root / "manuscript/01_abstract.md").write_text("Changed during check.\n")
+            (root / "docs/manuscript/01_abstract.md").write_text("Changed during check.\n")
         elif defect == "receipt_race":
             receipt.write_text(receipt.read_text() + "\n")
         return ()
@@ -1947,10 +1947,10 @@ def test_resume_journal_atomic_rewrite_preserves_landed_path(
 
 
 def test_render_barrier_paths_matches_the_documented_surface() -> None:
-    """Exact-match files and manuscript/docs prefix hits, per the docs table."""
+    """Exact-match files and docs/manuscript/docs prefix hits, per the docs table."""
     assert _render_barrier_paths(
         [
-            "manuscript/sections/intro.tex",
+            "docs/manuscript/sections/intro.tex",
             "src/fep_formal/output/rendering.py",
             "scripts/render_publication.py",
             "render.py",
@@ -1959,7 +1959,7 @@ def test_render_barrier_paths_matches_the_documented_surface() -> None:
             "src/fep_formal/custody/refresh.py",
         ]
     ) == [
-        "manuscript/sections/intro.tex",
+        "docs/manuscript/sections/intro.tex",
         "src/fep_formal/output/rendering.py",
         "scripts/render_publication.py",
         "render.py",
@@ -1967,7 +1967,7 @@ def test_render_barrier_paths_matches_the_documented_surface() -> None:
         "docs/pin_audit.py",
     ]
     assert RENDER_INPUTS == (
-        "manuscript/",
+        "docs/manuscript/",
         "src/fep_formal/output/rendering.py",
         "scripts/render_publication.py",
         "render.py",

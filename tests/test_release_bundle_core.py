@@ -592,8 +592,8 @@ def test_archive_validator_rejects_unnormalized_metadata(tmp_path: Path) -> None
 @pytest.mark.parametrize(
     "omitted",
     [
-        "manuscript/references.bib",
-        "manuscript/09z_unified_formalism_catalogue.md",
+        "docs/manuscript/references.bib",
+        "docs/manuscript/09z_unified_formalism_catalogue.md",
         "docs/formalism-coverage.json",
         "docs/formalism-atlas.svg",
         "docs/formal-kernel-dashboard.html",

@@ -191,7 +191,7 @@ def _check_topics_yaml(project_root: Path) -> tuple[bool, str]:
 
 
 def _check_dirs(project_root: Path) -> tuple[bool, str]:
-    required = ("manuscript", "config", "src", "lean", "scripts", "tests")
+    required = ("docs/manuscript", "config", "src", "lean", "scripts", "tests")
     missing = [rel for rel in required if not (project_root / rel).is_dir()]
     return (
         not missing,
@@ -249,15 +249,15 @@ def _check_file(project_root: Path, relative: str) -> tuple[bool, str]:
 
 
 def _check_references_bib(project_root: Path) -> tuple[bool, str]:
-    path = project_root / "manuscript" / "references.bib"
+    path = project_root / "docs" / "manuscript" / "references.bib"
     if not path.is_file():
-        return False, "manuscript/references.bib is missing"
+        return False, "docs/manuscript/references.bib is missing"
     try:
         text = path.read_text(encoding="utf-8")
     except (OSError, UnicodeError) as exc:
-        return False, f"cannot read manuscript/references.bib: {exc}"
+        return False, f"cannot read docs/manuscript/references.bib: {exc}"
     if not text.strip():
-        return False, "manuscript/references.bib is empty"
+        return False, "docs/manuscript/references.bib is empty"
 
     # BibTeX permits nested braced values, so a mere entry-header match is not
     # enough: fail closed on any unmatched unescaped brace as well.
@@ -274,20 +274,20 @@ def _check_references_bib(project_root: Path) -> tuple[bool, str]:
         elif character == "}":
             depth -= 1
             if depth < 0:
-                return False, "manuscript/references.bib has an unmatched closing brace"
+                return False, "docs/manuscript/references.bib has an unmatched closing brace"
     if depth:
-        return False, "manuscript/references.bib has an unmatched opening brace"
+        return False, "docs/manuscript/references.bib has an unmatched opening brace"
 
     matches = list(_BIB_ENTRY_RE.finditer(text))
     keys = [match.group("key") for match in matches]
     if not keys:
-        return False, "manuscript/references.bib has no parseable BibTeX entries"
+        return False, "docs/manuscript/references.bib has no parseable BibTeX entries"
     duplicates = sorted(key for key, count in Counter(keys).items() if count > 1)
     if duplicates:
         return False, "duplicate bibliography keys: " + ", ".join(duplicates)
     entry_lines = [line for line in text.splitlines() if line.lstrip().startswith("@")]
     if len(entry_lines) != len(matches):
-        return False, "manuscript/references.bib has a malformed entry header"
+        return False, "docs/manuscript/references.bib has a malformed entry header"
     return True, f"references.bib validated ({len(keys)} unique entries)"
 
 
@@ -351,7 +351,7 @@ def run_validation_checks(
         ),
         (
             "manuscript_config",
-            lambda: _check_file(project_root, "manuscript/config.yaml"),
+            lambda: _check_file(project_root, "docs/manuscript/config.yaml"),
         ),
         ("catalogue_loader", lambda: _check_topics_yaml(project_root)),
         ("references_bib", lambda: _check_references_bib(project_root)),

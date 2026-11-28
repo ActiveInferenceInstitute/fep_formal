@@ -724,7 +724,7 @@ def render_receipt_section(
     from fep_formal.output.render_log import receipt_defects
 
     receipt = receipt_path or root / RENDER_RECEIPT
-    manuscript = manuscript_dir or root / "manuscript"
+    manuscript = manuscript_dir or root / "docs" / "manuscript"
     composes = (
         "fep_formal.output.render_log.receipt_defects",
         "fep_formal.output.render_log.manuscript_source_digests",
@@ -1007,7 +1007,7 @@ def build_status_report(root: Path, gnn_root: Path | None = None) -> StatusRepor
             _stored_readiness_section(
                 root,
                 name="publication_inputs",
-                receipts=(Path("manuscript/manuscript_vars.yaml"),),
+                receipts=(Path("docs/manuscript/manuscript_vars.yaml"),),
                 validator=_publication_input_errors,
                 owner="fep_formal.output.release_bundle._prerequisites",
                 runtime_required=True,

@@ -164,9 +164,9 @@ def _manuscript_inputs(project_root: Path) -> tuple[Path, ...]:
     rendered_root = root / "output" / "manuscript"
     rendered = tuple(
         rendered_root / source.name
-        for source in bundle.manuscript_source_files(root / "manuscript")
+        for source in bundle.manuscript_source_files(root / "docs" / "manuscript")
     )
-    return (*rendered, root / "manuscript" / "09z_unified_formalism_catalogue.md")
+    return (*rendered, root / "docs" / "manuscript" / "09z_unified_formalism_catalogue.md")
 
 
 def _manuscript_source_records(
@@ -175,7 +175,7 @@ def _manuscript_source_records(
     """Capture authored manuscript inputs through the canonical file boundary."""
     root = Path(project_root).resolve()
     records: list[tuple[str, bytes]] = []
-    for path in bundle.manuscript_source_files(root / "manuscript"):
+    for path in bundle.manuscript_source_files(root / "docs" / "manuscript"):
         relative = path.relative_to(root).as_posix()
         try:
             data = _relative_file_bytes(root, relative)
@@ -296,9 +296,9 @@ def _canonical_renderer_input_records(
         path.relative_to(root).as_posix()
         for path in (
             *_manuscript_inputs(root),
-            root / "manuscript" / "references.bib",
-            root / "manuscript" / "config.yaml",
-            root / "manuscript" / "preamble.md",
+            root / "docs" / "manuscript" / "references.bib",
+            root / "docs" / "manuscript" / "config.yaml",
+            root / "docs" / "manuscript" / "preamble.md",
         )
     }
     for _source, destination in bundle.MANUSCRIPT_ASSETS.values():
@@ -391,7 +391,7 @@ def _normalized_renderer_environment(epoch: int) -> dict[str, str]:
 
 def _latex_preamble(project_root: Path) -> bytes:
     """Extract the single fenced LaTeX preamble used by the PDF renderer."""
-    raw = _relative_file_bytes(project_root, "manuscript/preamble.md")
+    raw = _relative_file_bytes(project_root, "docs/manuscript/preamble.md")
     try:
         text = raw.decode("utf-8")
     except UnicodeError as exc:
@@ -408,14 +408,14 @@ def _latex_preamble(project_root: Path) -> bytes:
 def _pandoc_base_command(project_root: Path, pandoc: str) -> list[str]:
     root = Path(project_root).resolve()
     try:
-        config_text = _relative_file_bytes(root, "manuscript/config.yaml").decode(
+        config_text = _relative_file_bytes(root, "docs/manuscript/config.yaml").decode(
             "utf-8"
         )
         config = yaml.safe_load(config_text)
     except (UnicodeDecodeError, yaml.YAMLError) as exc:
-        raise ReleaseBundleError("manuscript/config.yaml is invalid") from exc
+        raise ReleaseBundleError("docs/manuscript/config.yaml is invalid") from exc
     if not isinstance(config, dict) or not isinstance(config.get("paper"), dict):
-        raise ReleaseBundleError("manuscript/config.yaml lacks paper metadata")
+        raise ReleaseBundleError("docs/manuscript/config.yaml lacks paper metadata")
     paper = config["paper"]
     title = paper.get("title")
     date = paper.get("date")
@@ -431,7 +431,7 @@ def _pandoc_base_command(project_root: Path, pandoc: str) -> list[str]:
         "--number-sections",
         f"--metadata=title:{title}",
         f"--metadata=date:{date}",
-        "--bibliography=manuscript/references.bib",
+        "--bibliography=docs/manuscript/references.bib",
         "--resource-path=output/manuscript:output/manuscript/assets:manuscript:docs",
     ]
     command.extend(
@@ -635,7 +635,7 @@ def _rendered_manuscript_errors(project_root: Path) -> tuple[str, ...]:
         expected_root = Path(raw) / "manuscript"
         try:
             render_manuscript(
-                root / "manuscript", expected_root, _manuscript_variables(root)
+                root / "docs" / "manuscript", expected_root, _manuscript_variables(root)
             )
         except (OSError, TypeError, ValueError) as exc:
             return (f"rendered manuscript cannot be reproduced: {exc}",)
@@ -679,7 +679,7 @@ def _rendered_manuscript_errors(project_root: Path) -> tuple[str, ...]:
 def _manuscript_variables(project_root: Path) -> dict[str, Any]:
     root = Path(project_root).resolve()
     try:
-        raw = _relative_file_bytes(root, "manuscript/manuscript_vars.yaml")
+        raw = _relative_file_bytes(root, "docs/manuscript/manuscript_vars.yaml")
         payload = yaml.safe_load(raw.decode("utf-8"))
     except (ReleaseBundleError, UnicodeDecodeError, yaml.YAMLError) as exc:
         raise ReleaseBundleError(f"cannot read manuscript variables: {exc}") from exc

@@ -15,7 +15,7 @@
 
 Authoritative fields live in the checked-in file. Highlights:
 
-- `project.version` should match `pyproject.toml` and `manuscript/config.yaml`.
+- `project.version` should match `pyproject.toml` and `docs/manuscript/config.yaml`.
 - `hermes.*` is loaded by `HermesConfig.from_settings()` in `fep_formal/llm/hermes.py` (env overrides apply).
 - SQLite state uses `resolve_gauss_home()` in `fep_formal/gauss/client.py`:
   `GAUSS_HOME` takes precedence over checkout `gauss.home`, then the caller's

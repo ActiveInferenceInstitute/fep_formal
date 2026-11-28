@@ -33,7 +33,7 @@ witnesses and execution receipts make those boundaries inspectable.
 | [Formalism coverage](../docs/formalism-coverage.md) | Generated topic, declaration, maturity and relationship inventory |
 | [Formalism atlas](../docs/formalism-atlas.html) | Offline interactive exploration of the same reviewed graph; download and open the HTML locally |
 | [Mathematical methods](../docs/mathematical-methods.md) | Python methods, source-grounded theorem analysis and the positioning explorer |
-| [Manuscript sources](../manuscript/README.md) | Authored chapters, generated inputs and reproducible publication workflow |
+| [Manuscript sources](../docs/manuscript/README.md) | Authored chapters, generated inputs and reproducible publication workflow |
 | [Accepted source checkpoints](../ISA.md#current-assessment) | Exact commits and the evidence supporting their scoped acceptance |
 | [Open backlog](../TODO.md) | Linked Issues with dependencies and concrete closure probes |
 
@@ -157,7 +157,7 @@ The published 1.6.0 manuscript retains its original DOI and files.
 
 The published [v1.6.0 release](https://github.com/ActiveInferenceInstitute/fep_formal/releases/tag/v1.6.0)
 contains mathematical methods and the manuscript's
-[Supplement A](../manuscript/08b_mathematical_positioning_supplement.md). Its
+[Supplement A](../docs/manuscript/08b_mathematical_positioning_supplement.md). Its
 recorded Lean/Mathlib pair is `v4.34.1`; its evidence describes that immutable
 release. The v4.35.0 migration and subsequent source improvements are recorded in the dated 2.0.0 preparation section of
 [CHANGELOG.md](../CHANGELOG.md); the [accepted checkpoint](../ISA.md#current-assessment)
@@ -203,7 +203,7 @@ explains the canonical README and its generated GitHub presentation.
 
 Authoring lives in [config](../config/README.md), the
 [Python package](../src/fep_formal/README.md), and the
-[manuscript](../manuscript/README.md). The [Lean workspace](../lean/README.md)
+[manuscript](../docs/manuscript/README.md). The [Lean workspace](../lean/README.md)
 compiles the projected formal sources. [Scripts](../scripts/README.md) provide
 bounded entry points, [tests](../tests/README.md) enforce contracts, and
 [specs](../specs/README.md) retain implementation plans and source-bound evidence.

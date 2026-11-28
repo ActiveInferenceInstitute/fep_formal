@@ -175,7 +175,7 @@ def main() -> int:
     failures = tuple(
         f"manuscript/{failure}"
         for failure in unresolved_manuscript_references(
-            root / "manuscript", additional_declarations=composed
+            root / "docs" / "manuscript", additional_declarations=composed
         )
     ) + root_count_reference_failures(root)
     if failures:

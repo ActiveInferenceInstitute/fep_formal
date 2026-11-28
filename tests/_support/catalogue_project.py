@@ -52,7 +52,7 @@ def copy_catalogue_project(source: Path, destination: Path) -> Path:
     # real pipeline, with no pre-existing receipt or test-census cache to reuse.
     paths.update(
         path
-        for path in (source / "manuscript").rglob("*")
+        for path in (source / "docs" / "manuscript").rglob("*")
         if path.is_file()
         and path.name not in _GENERATED_MANUSCRIPT_FILES
         and not (_EXCLUDED_DIRECTORIES & set(path.relative_to(source).parts))
@@ -81,7 +81,7 @@ def manuscript_owner_state(project: Path) -> dict[str, tuple[object, ...]]:
         )
 
     result: dict[str, tuple[object, ...]] = {}
-    for path in sorted((project / "manuscript").rglob("*")):
+    for path in sorted((project / "docs" / "manuscript").rglob("*")):
         if path.is_file():
             before = path.stat()
             digest = sha256(path.read_bytes()).hexdigest()

@@ -1432,7 +1432,7 @@ with `FEP-FULL-CURRENT` replacing the stale 155-topic task name.
 Same-commit CI native and axiom-audit artifacts were independently validated
 against the live source (168/168 topics at v4.34.1, zero warnings or `sorry`,
 1,411 audited declarations). Older ignored local receipts were preserved.
-Local cache incompatibility and manuscript/render/bridge freshness remain
+Local cache incompatibility and docs/manuscript/render/bridge freshness remain
 explicit residuals; no new full native sweep, provider run, or publication
 is claimed by this review.
 
@@ -1925,7 +1925,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   `docs/development.md`, `docs/authorship-guide.md` and one block in
   `docs/cold-start-and-cleanup.md` ran
   `scripts/render_manuscript.py --check` with no generator ahead of it.
-  `manuscript/manuscript_vars.yaml` and the generated appendix are
+  `docs/manuscript/manuscript_vars.yaml` and the generated appendix are
   `.gitignore`d build products, so on a fresh checkout the check exits 1 with
   "test collection cache is missing" before validating anything. Each block
   now runs `uv run fep-lean catalogue` first, and
@@ -1996,7 +1996,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   `longtable`s and six captions, all six on figures, so no table carried a
   number any prose could cite; the one Mermaid diagram shipped as
   "Figure 3: Mermaid diagram", the template's placeholder.
-- Carried `manuscript/config.yaml`'s subtitle and fifteen keywords into the PDF
+- Carried `docs/manuscript/config.yaml`'s subtitle and fifteen keywords into the PDF
   `/Info` dictionary, and made `scripts/render_manuscript.py` fail closed when
   the preamble copy drifts from the config (`pdf_metadata_drift`).
 - Replaced the hand-maintained "Mathlib navigation hint" column with each
@@ -2011,7 +2011,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   in, and `unknown_topic_import_modules` checks the relation itself against the
   pinned Mathlib.
 - Stopped a catalog theorem reading as Mathlib prior art, and made the
-  allowlist that hid it self-checking. `manuscript/04b_framework_active_inference.md`
+  allowlist that hid it self-checking. `docs/manuscript/04b_framework_active_inference.md`
   said fep-008's proof used "`min_agrees_on_value` plus `le_antisymm`", between
   two real Mathlib names; `grep -rl min_agrees_on_value
   lean/.lake/packages/mathlib/Mathlib` matches nothing, because the name is
@@ -2041,7 +2041,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
   clean acceptance now writes `docs/render-acceptance.json` and CI runs
   `--verify-receipt` against it. The
   receipt is bound to a digest over every typeset manuscript source plus
-  `manuscript/preamble.md`, so a chapter or a font selection changed without a
+  `docs/manuscript/preamble.md`, so a chapter or a font selection changed without a
   fresh render fails CI; it is not bound to the values a `{{token}}` resolves
   to, which `manuscript_projection_drift` and `stale_render_defects` own on the
   render path. A rejected render writes no receipt and withdraws the standing
@@ -2223,7 +2223,7 @@ Evidence refresh state (final chain, 2026-09-11 against 3ee3007): bridge custody
 - Fixed the red `main` CI. The projection-check step ran
   `scripts/build_render_fonts.py --check` before `uv run fep-lean catalogue`
   had materialized the gitignored generated appendix
-  (`manuscript/09z_unified_formalism_catalogue.md`), so every fresh checkout
+  (`docs/manuscript/09z_unified_formalism_catalogue.md`), so every fresh checkout
   derived a smaller glyph set than the committed `docs/render-fonts.json` and
   the workflow reported a false STALE. The check now runs after the catalog
   step, and requirement derivation fails closed on its own: without the

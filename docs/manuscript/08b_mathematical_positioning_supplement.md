@@ -61,7 +61,7 @@ families.
 
 : Mathematical roles of FEP subparts, their carriers, connections, and essential scope boundaries. {#tbl:math_subpart_roles}
 
-![Authored family-domain incidence. A filled cell records a selected mathematical context for the family and is inherited by its rows as editorial context; it does not certify that every row proves a result in that domain. The accompanying model retains each row's primary declaration and reviewed scope.](../output/figures/mathematical-family-domains.png){#fig:math_family_domains width=100%}
+![Authored family-domain incidence. A filled cell records a selected mathematical context for the family and is inherited by its rows as editorial context; it does not certify that every row proves a result in that domain. The accompanying model retains each row's primary declaration and reviewed scope.](../../output/figures/mathematical-family-domains.png){#fig:math_family_domains width=100%}
 
 The formal setting is Lean's dependent type theory plus the declared imports,
 definitions, assumptions, and allowed axioms. Scientific semantics is an
@@ -69,9 +69,9 @@ additional review obligation. A proof of $A\Rightarrow T$ does not assert
 that a biological or physical system satisfies $A$. The same distinction
 applies to a model-generated manuscript and to a hand-written proof.
 
-![Maintained semantic dispositions shown by family. The panel copies the semantic review records and preserves the distinction between formalized, conditional, and structural proxies. These labels describe reviewed mathematical reach; this figure does not provide current native compilation or empirical acceptance.](../output/figures/mathematical-semantic-layers.png){#fig:math_semantic_layers width=100%}
+![Maintained semantic dispositions shown by family. The panel copies the semantic review records and preserves the distinction between formalized, conditional, and structural proxies. These labels describe reviewed mathematical reach; this figure does not provide current native compilation or empirical acceptance.](../../output/figures/mathematical-semantic-layers.png){#fig:math_semantic_layers width=100%}
 
-The [interactive mathematical map](../docs/mathematical-positioning/mathematical-map.html)
+The [interactive mathematical map](../mathematical-positioning/mathematical-map.html)
 provides the associated tables and boundary values. The family incidence and
 semantic panels answer different questions: where a comparison may be useful,
 and what the selected row's maintained review permits one to claim.
@@ -153,7 +153,7 @@ boundary. Multidimensional dual connections, a general statistical-manifold
 atlas, and coordinate-invariant mechanics remain separate extensions, as
 explained in [@sec:h2_information_geometry].
 
-![Fisher geometry of explicit formula examples. The Bernoulli interior information is $1/(p(1-p))$. For the independent duplicated-mean Gaussian example with variance two, the pullback matrix has eigenvalues zero and one, so the direction $(1,-1)$ is unidentifiable. This explanatory Gaussian example is distinct from the source's duplicated Bernoulli matrix, and the plotted values are numerical analysis rather than a proof receipt.](../output/figures/mathematical-fisher-geometry.png){#fig:math_fisher_geometry width=100%}
+![Fisher geometry of explicit formula examples. The Bernoulli interior information is $1/(p(1-p))$. For the independent duplicated-mean Gaussian example with variance two, the pullback matrix has eigenvalues zero and one, so the direction $(1,-1)$ is unidentifiable. This explanatory Gaussian example is distinct from the source's duplicated Bernoulli matrix, and the plotted values are numerical analysis rather than a proof receipt.](../../output/figures/mathematical-fisher-geometry.png){#fig:math_fisher_geometry width=100%}
 
 ### Boundary topology and optimization
 
@@ -186,7 +186,7 @@ proved. The selected Gaussian semigroup modules and the two-hypothesis
 posterior-convergence module do so; their quantifiers must survive any
 comparison with upstream probability results.
 
-![Support and convergence on a two-atom carrier. For $p_\varepsilon=(1-\varepsilon,\varepsilon)$, total variation from the first point mass and the supported divergence $\mathrm{KL}(\delta_0\Vert p_\varepsilon)$ tend to zero. The reverse native divergence remains infinite for positive $\varepsilon$. Values illustrate exact finite formulas and an analytic support obstruction; they do not supply a general convergence theorem.](../output/figures/mathematical-support-convergence.png){#fig:math_support_convergence width=100%}
+![Support and convergence on a two-atom carrier. For $p_\varepsilon=(1-\varepsilon,\varepsilon)$, total variation from the first point mass and the supported divergence $\mathrm{KL}(\delta_0\Vert p_\varepsilon)$ tend to zero. The reverse native divergence remains infinite for positive $\varepsilon$. Values illustrate exact finite formulas and an analytic support obstruction; they do not supply a general convergence theorem.](../../output/figures/mathematical-support-convergence.png){#fig:math_support_convergence width=100%}
 
 ### Observation and process embeddings
 
@@ -209,7 +209,7 @@ full latent law. This is a direct answer to the embedding-space question:
 the observation image is a smaller statistical experiment, and its fibers
 contain distinctions that the selected observation cannot resolve.
 
-![An independent elementary OU obstruction to latent identification. Independent coordinates have decay rates one and two, identity covariance, and initial means $(1,0)$ and $(1,3)$. Full one-time Gaussian KL is $4.5e^{-4t}$, while observation of the first coordinate has zero KL between the hypotheses. This explanatory model uses different coordinates and normalization from the native H3 construction and supplies no H3 receipt.](../output/figures/mathematical-hidden-projection.png){#fig:math_hidden_projection width=100%}
+![An independent elementary OU obstruction to latent identification. Independent coordinates have decay rates one and two, identity covariance, and initial means $(1,0)$ and $(1,3)$. Full one-time Gaussian KL is $4.5e^{-4t}$, while observation of the first coordinate has zero KL between the hypotheses. This explanatory model uses different coordinates and normalization from the native H3 construction and supplies no H3 receipt.](../../output/figures/mathematical-hidden-projection.png){#fig:math_hidden_projection width=100%}
 
 ### Corpus representations
 
@@ -955,11 +955,11 @@ assumptions before chaining. A transitive path in a drawing is therefore a
 candidate proof route whose middle objects must be checked, not a new theorem
 already certified by the graph.
 
-![Authored formal derivations aggregated by family. Rows denote source families and columns denote target families; each count records maintained topic edges with qualified witnesses. The {{formalism.relation_counts.formal}} edges retain their exact endpoints in the accessible table. Family aggregation does not compose relations into new theorems.](../output/figures/mathematical-authored-relations-formal.png){#fig:math_formal_relations width=100%}
+![Authored formal derivations aggregated by family. Rows denote source families and columns denote target families; each count records maintained topic edges with qualified witnesses. The {{formalism.relation_counts.formal}} edges retain their exact endpoints in the accessible table. Family aggregation does not compose relations into new theorems.](../../output/figures/mathematical-authored-relations-formal.png){#fig:math_formal_relations width=100%}
 
-![Authored formal pairings aggregated by family. The recorded source and target orientation locates {{formalism.relation_counts.formal_pairing}} checked pairings; it does not turn a conjunction or co-location of endpoint results into a directed implication. Exact topic endpoints and qualified witnesses remain in the accessible edge table.](../output/figures/mathematical-authored-relations-formal-pairing.png){#fig:math_formal_pairings width=100%}
+![Authored formal pairings aggregated by family. The recorded source and target orientation locates {{formalism.relation_counts.formal_pairing}} checked pairings; it does not turn a conjunction or co-location of endpoint results into a directed implication. Exact topic endpoints and qualified witnesses remain in the accessible edge table.](../../output/figures/mathematical-authored-relations-formal-pairing.png){#fig:math_formal_pairings width=100%}
 
-![Authored conceptual associations aggregated by family. Rows and columns retain the source and target orientation of {{formalism.relation_counts.conceptual}} maintained associations. These edges supply research context rather than theorem witnesses. Editorial upstream affinities remain separate from every maintained relation layer.](../output/figures/mathematical-authored-relations-conceptual.png){#fig:math_conceptual_relations width=100%}
+![Authored conceptual associations aggregated by family. Rows and columns retain the source and target orientation of {{formalism.relation_counts.conceptual}} maintained associations. These edges supply research context rather than theorem witnesses. Editorial upstream affinities remain separate from every maintained relation layer.](../../output/figures/mathematical-authored-relations-conceptual.png){#fig:math_conceptual_relations width=100%}
 
 The same discipline resolves several common FEP associations. A state
 partition does not establish conditional independence. Rowwise blanket
@@ -1714,7 +1714,7 @@ and rejects an unknown or unqualified identity. Source extraction and maintained
 provide traceability; they do not constitute a certified translation from
 Lean to English or an independent elaboration of the theorem.
 
-![Three layers of a theorem contract: exact primary declaration and syntactic binder information, maintained row-owned semantic review, and inherited family context. The distinction supports source-grounded explanation without treating binder counts or shared mathematical tags as proof strength or certified translation.](../output/figures/mathematical-theorem-contracts.png){#fig:math_theorem_contracts width=100%}
+![Three layers of a theorem contract: exact primary declaration and syntactic binder information, maintained row-owned semantic review, and inherited family context. The distinction supports source-grounded explanation without treating binder counts or shared mathematical tags as proof strength or certified translation.](../../output/figures/mathematical-theorem-contracts.png){#fig:math_theorem_contracts width=100%}
 
 For example, the declaration
 `FEP.ActiveInference.variationalFreeEnergy_eq_surprisal_iff` has finite
@@ -1857,7 +1857,7 @@ must be interpreted through their explicit inputs. Neither is a metric on
 mathematical truth, and choosing the larger similarity value cannot turn a
 proposed adapter into a derivation.
 
-![Inspectably authored cross-corpus coordinates. Domain, carrier, and hypothesis or regime assignments are positive source contexts; missing assignments are not negated hypotheses. FEP family rows are unions across selected owned statements, while pinned upstream records retain their own declared scope. This incidence display exposes what determines the accompanying distance map.](../output/figures/mathematical-cross-corpus-features.png){#fig:math_cross_corpus_features width=100%}
+![Inspectably authored cross-corpus coordinates. Domain, carrier, and hypothesis or regime assignments are positive source contexts; missing assignments are not negated hypotheses. FEP family rows are unions across selected owned statements, while pinned upstream records retain their own declared scope. This incidence display exposes what determines the accompanying distance map.](../../output/figures/mathematical-cross-corpus-features.png){#fig:math_cross_corpus_features width=100%}
 
 {{methods.cross_corpus.coordinate_key_table}}
 
@@ -1922,7 +1922,7 @@ Likewise, a close upstream/FEP pair may be a good reading recommendation
 without being a better candidate for formal transfer than a more distant
 pair with exactly matching carriers and support.
 
-![Classical multidimensional scaling of the declared shared feature distances. Proximity denotes authored domain, carrier, and hypothesis or regime overlap. The plotted coordinates retain rank, eigenvalue, stress, and axis-ambiguity diagnostics in the shared model; they do not establish theorem equivalence, imported proofs, or scientific acceptance.](../output/figures/mathematical-cross-corpus-embedding.png){#fig:math_cross_corpus_embedding width=100%}
+![Classical multidimensional scaling of the declared shared feature distances. Proximity denotes authored domain, carrier, and hypothesis or regime overlap. The plotted coordinates retain rank, eigenvalue, stress, and axis-ambiguity diagnostics in the shared model; they do not establish theorem equivalence, imported proofs, or scientific acceptance.](../../output/figures/mathematical-cross-corpus-embedding.png){#fig:math_cross_corpus_embedding width=100%}
 
 {{methods.cross_corpus.row_key_table}}
 
@@ -2195,7 +2195,7 @@ forecasting setting [@brier1950verification]; the exact excess-risk identity
 is `FEP.EmpiricalRisk.brierExcess_eq_sqError`. The displayed KL preference
 term is a selected surrogate, not a restatement of every EFE objective.
 
-![Prediction and preference optimize different declared functions. For Bernoulli truth $0.7$, expected scalar Brier loss is minimized at report $0.7$. The selected preference surrogate $\mathrm{KL}(\operatorname{Bern}(q)\Vert\operatorname{Bern}(0.2))$ is minimized at $0.2$. This formula comparison distinguishes calibration from preference fulfillment; it is not a generic EFE identity or a simulated policy experiment.](../output/figures/mathematical-risk-preference.png){#fig:math_risk_preference width=100%}
+![Prediction and preference optimize different declared functions. For Bernoulli truth $0.7$, expected scalar Brier loss is minimized at report $0.7$. The selected preference surrogate $\mathrm{KL}(\operatorname{Bern}(q)\Vert\operatorname{Bern}(0.2))$ is minimized at $0.2$. This formula comparison distinguishes calibration from preference fulfillment; it is not a generic EFE identity or a simulated policy experiment.](../../output/figures/mathematical-risk-preference.png){#fig:math_risk_preference width=100%}
 
 A policy comparison additionally fixes the information budget and admissible
 class. The finite open-loop embedding and H3 measurable two-step comparison

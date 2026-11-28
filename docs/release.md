@@ -9,8 +9,8 @@ actually ships, and it is fully checked by
 
 | Requirement | Checked by |
 | --- | --- |
-| One version across `pyproject.toml`, `compat/fep-lean/pyproject.toml` (including its dependency/extras), `src/fep_formal/__init__.py`, `CITATION.cff`, `manuscript/config.yaml`, `config/settings.yaml`, `.aii/config.yaml`, `uv.lock` and the release-bundle constants | `release_check.py` |
-| One release date across `CITATION.cff`, `manuscript/config.yaml`, `.aii/config.yaml` and the release-bundle constants | `release_check.py` |
+| One version across `pyproject.toml`, `compat/fep-lean/pyproject.toml` (including its dependency/extras), `src/fep_formal/__init__.py`, `CITATION.cff`, `docs/manuscript/config.yaml`, `config/settings.yaml`, `.aii/config.yaml`, `uv.lock` and the release-bundle constants | `release_check.py` |
+| One release date across `CITATION.cff`, `docs/manuscript/config.yaml`, `.aii/config.yaml` and the release-bundle constants | `release_check.py` |
 | A `## X.Y.Z — YYYY-MM-DD — title` section in `CHANGELOG.md` | `release_check.py` |
 | Clean working tree; `HEAD` equals `origin/main` | `release_check.py --hosted` |
 | The newest hosted `ci.yml` run on that exact commit succeeded, and its `python`, `static`, `lean`, `render-deps`, `render` and every `distribution` matrix job each succeeded (none skipped) | `release_check.py --hosted` |
@@ -21,7 +21,7 @@ The InstituteOS sidecar (`.aii/config.yaml`) records the same release identity
 the manuscript renders: `provenance.current_release: v2.1.0`,
 `meta.updated: 2026-10-24`, and concept DOI `10.5281/zenodo.19699233`
 (`provenance.citation.doi` in the sidecar, and the scholarly concept in
-[`CITATION.cff`](../CITATION.cff) and [the manuscript](../manuscript/config.yaml)).
+[`CITATION.cff`](../CITATION.cff) and [the manuscript](manuscript/config.yaml)).
 The release gate checks the version and date across the sidecar, citation and
 manuscript files; the concept DOI names the scholarly corpus, not a version
 record.
@@ -105,7 +105,7 @@ A release changes no scientific claim. Unrun lanes stay described as unrun.
    accepted PDF, offline companion, wheel, sdist, exact tagged source archive
    and SHA-256 checksums. The offline companion must preserve the PDF's
    relative explorer link: `pdf/fep_lean_combined.pdf` beside
-   `manuscript/assets/mathematical-map.html` and its referenced assets.
+   `docs/manuscript/assets/mathematical-map.html` and its referenced assets.
    Keep current workstation paths, account information and private execution
    logs out of new generated public artifacts. An exact tagged source archive
    retains already-public historical custody records unchanged; compare those

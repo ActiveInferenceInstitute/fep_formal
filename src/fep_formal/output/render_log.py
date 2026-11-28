@@ -39,6 +39,7 @@ from itertools import accumulate, groupby
 from pathlib import Path
 from typing import Any
 
+from fep_formal._paths import project_root_from_manuscript
 from fep_formal.output.fsutil import sha256_bytes
 from fep_formal.output.rendering import (
     PLACEHOLDER_RE,
@@ -794,7 +795,7 @@ def equation_numbering_defects(
 # produces one: the ``render`` job in ``.github/workflows/ci.yml`` checks out
 # the shared template at its pinned ref -- a separate repository this project
 # does not pin programmatically -- plus XeLaTeX, pandoc, ``rsvg-convert``, the
-# mermaid CLI and the two faces ``manuscript/preamble.md`` selects, renders,
+# mermaid CLI and the two faces ``docs/manuscript/preamble.md`` selects, renders,
 # and re-runs the acceptance's verification. The committed receipt remains the
 # gate that refuses sources the acceptance has never seen.
 #
@@ -865,7 +866,9 @@ def manuscript_source_digests(manuscript_dir: Path) -> dict[str, str]:
     }
     # The cover projects its author from CFF rather than duplicating identity
     # in config.yaml. Both owners must invalidate an earlier render receipt.
-    sources["../CITATION.cff"] = manuscript.parent / "CITATION.cff"
+    sources["../CITATION.cff"] = (
+        project_root_from_manuscript(manuscript) / "CITATION.cff"
+    )
     return {
         name: sha256_bytes(path.read_bytes() if path.is_file() else b"")
         for name, path in sources.items()

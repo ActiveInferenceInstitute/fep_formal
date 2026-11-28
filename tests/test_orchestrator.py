@@ -70,9 +70,9 @@ def test_run_pipeline_writes_catalogue_report(catalogue_project: Path) -> None:
     assert not (catalogue_project / "output/reports").exists()
     assert (report / "summary.json").is_file()
     assert (report / "index.md").is_file()
-    assert (catalogue_project / "manuscript/manuscript_vars.yaml").is_file()
+    assert (catalogue_project / "docs/manuscript/manuscript_vars.yaml").is_file()
     assert (
-        catalogue_project / "manuscript/09z_unified_formalism_catalogue.md"
+        catalogue_project / "docs/manuscript/09z_unified_formalism_catalogue.md"
     ).is_file()
 
 

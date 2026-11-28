@@ -57,7 +57,7 @@ def _driver():
 
 def _project(tmp_path: Path, log: str) -> Path:
     """A project tree holding one rendered chapter and one compiler log."""
-    manuscript = tmp_path / "manuscript"
+    manuscript = tmp_path / "docs" / "manuscript"
     pdf = tmp_path / "output" / "pdf"
     manuscript.mkdir(parents=True)
     pdf.mkdir(parents=True)
@@ -93,7 +93,7 @@ def _cover_fixture(root: Path) -> None:
         encoding="utf-8",
     )
     config = b'paper:\n  title: "FEP & Lean"\n  subtitle: "A 100% formalization"\n'
-    (root / "manuscript/config.yaml").write_bytes(config)
+    (root / "docs/manuscript/config.yaml").write_bytes(config)
     generated = root / "output/manuscript"
     generated.mkdir(parents=True, exist_ok=True)
     (generated / "config.yaml").write_bytes(project_cover_author(config, root))
@@ -438,7 +438,7 @@ def test_a_clean_render_writes_the_committed_receipt(tmp_path: Path) -> None:
         "unnumbered_equations": 0,
     }
     assert receipt["manuscript_source_digest"] == manuscript_source_digest(
-        project / "manuscript"
+        project / "docs" / "manuscript"
     )
     assert sorted(receipt["source_digests"]) == [
         "../CITATION.cff",
@@ -531,7 +531,7 @@ def test_the_committed_receipt_covers_the_committed_manuscript() -> None:
     assert (
         receipt_defects(
             PROJECT_ROOT / "docs" / "render-acceptance.json",
-            PROJECT_ROOT / "manuscript",
+            PROJECT_ROOT / "docs" / "manuscript",
         )
         == ()
     )
@@ -583,7 +583,7 @@ def test_unnumbered_equations_reject_successful_template(tmp_path: Path) -> None
         .replace(r"\end{equation}", r"\end{equation*}"),
         encoding="utf-8",
     )
-    assert publication_cover_defects(project / "manuscript", tex.parent) == ()
+    assert publication_cover_defects(project / "docs" / "manuscript", tex.parent) == ()
     assert (
         driver.render_publication(
             project,
@@ -648,7 +648,7 @@ def test_accept_only_rejects_noncanonical_cover(
             + len(r"\end{titlepage}")
         ]
     elif mutation == "stale_config":
-        config = project / "manuscript/config.yaml"
+        config = project / "docs/manuscript/config.yaml"
         config.write_bytes(config.read_bytes().replace(b"FEP & Lean", b"New Title"))
         projection.write_bytes(project_cover_author(config.read_bytes(), project))
     elif mutation == "body_only":
@@ -711,7 +711,10 @@ def test_accept_only_rejects_noncanonical_cover(
 def test_canonical_escaped_cover_and_projection_pass(tmp_path: Path) -> None:
     project = _project(tmp_path, CLEAN_LOG)
     assert (
-        publication_cover_defects(project / "manuscript", project / "output/pdf") == ()
+        publication_cover_defects(
+            project / "docs" / "manuscript", project / "output/pdf"
+        )
+        == ()
     )
 
 
@@ -720,7 +723,10 @@ def test_identical_pandoc_and_template_author_declarations_pass(tmp_path: Path) 
     tex = project / "output/pdf/_combined_manuscript.tex"
     tex.write_text(r"\author{Daniel Friedman}" + "\n" + tex.read_text())
     assert (
-        publication_cover_defects(project / "manuscript", project / "output/pdf") == ()
+        publication_cover_defects(
+            project / "docs" / "manuscript", project / "output/pdf"
+        )
+        == ()
     )
 
 
@@ -740,7 +746,7 @@ def test_actual_pinned_template_cover_orcid(tmp_path: Path) -> None:
     ).stdout.strip()
     assert revision == "5b3c0f43940f0322fbc6205b3be4c2854f99329d"
     project = _project(tmp_path, CLEAN_LOG)
-    source = project / "manuscript/config.yaml"
+    source = project / "docs/manuscript/config.yaml"
     source.write_bytes(
         source.read_bytes()
         + b"  cover: {image: assets/graphical-abstract.png, alt: Graphical abstract}\n"
@@ -748,7 +754,7 @@ def test_actual_pinned_template_cover_orcid(tmp_path: Path) -> None:
     generated = project / "output/manuscript"
     (generated / "assets").mkdir()
     shutil.copy2(
-        PROJECT_ROOT / "manuscript/assets/graphical-abstract.png",
+        PROJECT_ROOT / "docs/manuscript/assets/graphical-abstract.png",
         generated / "assets/graphical-abstract.png",
     )
     projected = project_cover_author(source.read_bytes(), project)
@@ -781,7 +787,7 @@ print(r"\end{document}")
         in result.stdout
     )
     assert result.stdout.count("https://orcid.org/") == 1
-    assert publication_cover_defects(project / "manuscript", tex.parent) == ()
+    assert publication_cover_defects(project / "docs" / "manuscript", tex.parent) == ()
     # Reproduce the old configuration bug through the same real generator.
     (generated / "config.yaml").write_bytes(
         projected.replace(
@@ -799,9 +805,9 @@ print(r"\end{document}")
     )
     assert "https://orcid.org/https://orcid.org/" in stale.stdout
     tex.write_text(stale.stdout, encoding="utf-8")
-    assert publication_cover_defects(project / "manuscript", tex.parent)
+    assert publication_cover_defects(project / "docs" / "manuscript", tex.parent)
     # Even with the config repaired, stale TeX must independently fail.
     (generated / "config.yaml").write_bytes(projected)
-    assert publication_cover_defects(project / "manuscript", tex.parent) == (
+    assert publication_cover_defects(project / "docs" / "manuscript", tex.parent) == (
         "publication titlepage does not contain the canonical cover projection",
     )

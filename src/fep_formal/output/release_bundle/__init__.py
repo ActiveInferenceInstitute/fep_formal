@@ -639,7 +639,7 @@ def publication_input_snapshot(
         snapshot = {
             "source": report_source_digest(root),
             "config": report_config_digest(root),
-            "manuscript": manuscript_source_digest(root / "manuscript"),
+            "manuscript": manuscript_source_digest(root / "docs" / "manuscript"),
         }
         relatives = {relative for relative, _kind in _REQUIRED_STATIC_MEMBERS} | {
             RENDER_RECEIPT.as_posix(),
@@ -656,7 +656,7 @@ def publication_input_snapshot(
             ),
             *(
                 (Path("output/manuscript") / source.name).as_posix()
-                for source in manuscript_source_files(root / "manuscript")
+                for source in manuscript_source_files(root / "docs" / "manuscript")
             ),
         }
         for relative in sorted(relatives):
@@ -728,8 +728,8 @@ def validate_render_acceptance_barrier(root: Path) -> dict[str, str]:
         receipt_bytes = _relative_file_bytes(root, "docs/render-acceptance.json")
     except (OSError, ValueError) as exc:
         raise ReleaseBundleError(f"render-acceptance barrier: {exc}") from exc
-    source_digest = manuscript_source_digest(root / "manuscript")
-    problems = list(receipt_defects(receipt, root / "manuscript"))
+    source_digest = manuscript_source_digest(root / "docs" / "manuscript")
+    problems = list(receipt_defects(receipt, root / "docs" / "manuscript"))
     if not problems:
         problems.extend(_rendered_manuscript_errors(root))
     if not problems:
@@ -741,7 +741,7 @@ def validate_render_acceptance_barrier(root: Path) -> dict[str, str]:
         )
     if (
         _relative_file_bytes(root, "docs/render-acceptance.json") != receipt_bytes
-        or manuscript_source_digest(root / "manuscript") != source_digest
+        or manuscript_source_digest(root / "docs" / "manuscript") != source_digest
     ):
         raise ReleaseBundleError(
             "render-acceptance barrier: inputs changed during acceptance validation"

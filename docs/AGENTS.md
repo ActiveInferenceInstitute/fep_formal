@@ -16,7 +16,7 @@ the canonical list at the project root.
 
 `--include-root` widens `check_links.py` and `md_hygiene.py` from `docs/**` to
 every root `*.md`, every `AGENTS.md` / `README.md` under `src/`, `tests/`,
-`config/`, `scripts/`, `lean/`, and `manuscript/`, maintained `.github` Markdown,
+`config/`, `scripts/`, `lean/`, and `docs/manuscript/`, maintained `.github` Markdown,
 and the non-historical documents under `specs/`. Historical trees are explicitly excluded because
 they are retained receipts: `specs/done/**`, `specs/**/evidence/**`,
 `specs/**/gnn_output*`, `specs/**/gnn-input`, and `specs/**/fixtures`. Repair a

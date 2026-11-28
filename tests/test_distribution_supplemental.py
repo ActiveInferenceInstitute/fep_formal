@@ -406,14 +406,14 @@ def _exercise_render_artifact_staging(
     # manuscript receipt validation, sources, staging and hashes remain real.
     # This verifies retention, not native compilation or a physical render.
     version_mutation = {
-        "during_source_drift": "Path('manuscript/01_abstract.md').write_text('Changed during provenance discovery.\\n')",
-        "during_chapter_addition": "Path('manuscript/02_extra.md').write_text('Added during provenance discovery.\\n')",
+        "during_source_drift": "Path('docs/manuscript/01_abstract.md').write_text('Changed during provenance discovery.\\n')",
+        "during_chapter_addition": "Path('docs/manuscript/02_extra.md').write_text('Added during provenance discovery.\\n')",
         "during_pdf_drift": "Path('output/pdf/fep_lean_combined.pdf').write_bytes(b'%PDF-unaccepted replacement')",
         "during_template_drift": "Path('output/render-template/README.md').write_text('Uncommitted template mutation.\\n')",
         "during_template_mode_drift": "Path('output/render-template/README.md').chmod(0o755); assert not _real_check_output(['git', '-C', 'output/render-template', 'diff', '--ignore-submodules=all', '--name-only', 'HEAD', '-z'])",
     }.get(failure, "pass")
     staged_mutation = {
-        "while_staging_source_drift": "Path('manuscript/01_abstract.md').write_text('Changed while retaining evidence.\\n')",
+        "while_staging_source_drift": "Path('docs/manuscript/01_abstract.md').write_text('Changed while retaining evidence.\\n')",
         "while_staging_pdf_drift": "_real_write_bytes(Path('output/pdf/fep_lean_combined.pdf'), b'%PDF-changed while retaining evidence')",
         "retained_pdf_drift": "_real_write_bytes(path, b'%PDF-corrupted retained artifact')",
     }.get(failure, "pass")
@@ -437,7 +437,7 @@ def _exercise_render_artifact_staging(
     elif gitlink_case is not None and gitlink_case.startswith("retention_"):
         staged_mutation = gitlink_mutation
     retained_read_mutation = {
-        "retained_read_source_drift": "Path('manuscript/01_abstract.md').write_text('Changed while verifying retained bytes.\\n')",
+        "retained_read_source_drift": "Path('docs/manuscript/01_abstract.md').write_text('Changed while verifying retained bytes.\\n')",
         "retained_read_pdf_drift": "_real_write_bytes(Path('output/pdf/fep_lean_combined.pdf'), b'%PDF-changed during retained read')",
     }.get(failure, "pass")
     script = (
@@ -609,7 +609,7 @@ def _exercise_render_artifact_staging(
         sources = json.loads((staged / "source-manifest.json").read_text())
         assert sources["commit"] == sha
         assert (
-            sources["sources"]["manuscript/01_abstract.md"]
+            sources["sources"]["docs/manuscript/01_abstract.md"]
             == hashlib.sha256((manuscript / "01_abstract.md").read_bytes()).hexdigest()
         )
         from fep_formal.output.release_bundle._core import _capture_link_bytes

@@ -98,7 +98,7 @@ examples. The complete FEP join preserves semantic review fields and
 qualified declarations. Mathematical domain tags are authored family context,
 while relations retain the existing canonical edge kinds and witnesses.
 
-The [supplement](../../manuscript/08b_mathematical_positioning_supplement.md)
+The [supplement](../../docs/manuscript/08b_mathematical_positioning_supplement.md)
 works through simplex interiors and support faces, attained rate-distortion
 optimization, finite/native KL boundaries, Fisher rank and null directions,
 faithful probability embedding, Gaussian process projection, statistical

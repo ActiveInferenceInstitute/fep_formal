@@ -241,8 +241,8 @@ def test_theorem_ref_audit_flags_unresolvable_manuscript_name(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     _write_count_references(tmp_path)
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     (manuscript / "chapter.md").write_text(
         "# Chapter\n\nTheorem fep999_absent_theorem states the claim.\n",
         encoding="utf-8",
@@ -267,8 +267,8 @@ def test_theorem_ref_audit_passes_manuscript_without_references(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     _write_count_references(tmp_path)
-    manuscript = tmp_path / "manuscript"
-    manuscript.mkdir()
+    manuscript = tmp_path / "docs" / "manuscript"
+    manuscript.mkdir(parents=True)
     (manuscript / "chapter.md").write_text(
         "# Chapter\n\nNo canonical declaration references here.\n",
         encoding="utf-8",
@@ -294,7 +294,7 @@ def test_current_readme_count_mutation_fails_the_actual_audit_gate(
     claim: str,
 ) -> None:
     counts = _write_count_references(tmp_path)
-    (tmp_path / "manuscript").mkdir()
+    (tmp_path / "docs" / "manuscript").mkdir(parents=True)
     original = (tmp_path / "README.md").read_text(encoding="utf-8")
     replacements = {
         "intro": (
@@ -460,7 +460,7 @@ def test_relation_captions_follow_the_canonical_counts_and_a_changed_count(
         (PROJECT_ROOT / "docs" / "formalism-coverage.json").read_text(encoding="utf-8")
     )
     source = (
-        PROJECT_ROOT / "manuscript" / "08b_mathematical_positioning_supplement.md"
+        PROJECT_ROOT / "docs" / "manuscript" / "08b_mathematical_positioning_supplement.md"
     ).read_text(encoding="utf-8")
     caption = next(line for line in source.splitlines() if f"#fig:{figure} " in line)
     count = coverage["relation_counts"][kind]
@@ -474,7 +474,7 @@ def test_relation_captions_follow_the_canonical_counts_and_a_changed_count(
 def test_second_expansion_heading_does_not_grow_with_the_full_catalogue() -> None:
     from fep_formal.output.rendering import substitute_placeholders
 
-    source = (PROJECT_ROOT / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
+    source = (PROJECT_ROOT / "docs" / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
         encoding="utf-8"
     )
     heading = source.splitlines()[0]
@@ -496,7 +496,7 @@ def test_second_expansion_heading_does_not_grow_with_the_full_catalogue() -> Non
 def test_second_expansion_current_toolchain_comes_from_workspace_variables() -> None:
     from fep_formal.output.rendering import substitute_placeholders
 
-    source = (PROJECT_ROOT / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
+    source = (PROJECT_ROOT / "docs" / "manuscript" / "04i_formalism_catalogue_155.md").read_text(
         encoding="utf-8"
     )
     toolchain_paragraph = next(
@@ -557,7 +557,7 @@ def _run_wide(
         "config/README.md",
         "scripts/AGENTS.md",
         "lean/README.md",
-        "manuscript/AGENTS.md",
+        "docs/manuscript/AGENTS.md",
         "specs/some-spec/README.md",
         ".github/AGENTS.md",
         ".github/pull_request_template.md",

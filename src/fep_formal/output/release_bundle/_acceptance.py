@@ -183,7 +183,7 @@ def _pytest_receipt_errors(
             )
     try:
         manuscript_vars = yaml.safe_load(
-            (root_path / "manuscript" / "manuscript_vars.yaml").read_text(
+            (root_path / "docs" / "manuscript" / "manuscript_vars.yaml").read_text(
                 encoding="utf-8"
             )
         )
@@ -611,7 +611,7 @@ def _collect_python_node_ids(
 def _python_input_snapshot(project_root: Path) -> dict[str, Any]:
     root = Path(project_root).resolve()
     test_records = _python_test_records(root)
-    test_count_owner = _relative_file_bytes(root, "manuscript/manuscript_vars.yaml")
+    test_count_owner = _relative_file_bytes(root, "docs/manuscript/manuscript_vars.yaml")
     snapshot: dict[str, Any] = {
         "source_sha256": bundle.report_source_digest(root),
         "config_sha256": bundle.report_config_digest(root),

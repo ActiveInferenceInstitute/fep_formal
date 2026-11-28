@@ -193,7 +193,7 @@ def _license_metadata_errors(project_root: Path) -> tuple[str, ...]:
 
     try:
         manuscript = yaml.safe_load(
-            _relative_file_bytes(root, "manuscript/config.yaml").decode("utf-8")
+            _relative_file_bytes(root, "docs/manuscript/config.yaml").decode("utf-8")
         )
     except (ReleaseBundleError, UnicodeDecodeError, yaml.YAMLError) as exc:
         errors.append(f"manuscript license metadata cannot be read: {exc}")

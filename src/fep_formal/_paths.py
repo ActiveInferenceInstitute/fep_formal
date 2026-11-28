@@ -65,7 +65,7 @@ _CHECKOUT_MARKERS = (
     "config/settings.yaml",
     "lean/lean-toolchain",
     "lean/lakefile.lean",
-    "manuscript/config.yaml",
+    "docs/manuscript/config.yaml",
     "src/fep_formal/__init__.py",
 )
 
@@ -110,6 +110,13 @@ def project_root() -> Path:
     The environment override is also useful for isolated test fixtures.
     """
     return explicit_project_root() or _PACKAGE_DIR.parent.parent
+
+
+def project_root_from_manuscript(manuscript: Path) -> Path:
+    """Locate project-owned metadata for canonical and legacy manuscript paths."""
+    if manuscript.parts[-2:] == ("docs", "manuscript"):
+        return manuscript.parent.parent
+    return manuscript.parent
 
 
 def explicit_project_root() -> Path | None:

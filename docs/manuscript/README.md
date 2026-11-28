@@ -31,7 +31,7 @@ records that gate in receipt version 2. The receipt also binds the cover
 configuration and bibliography, as well as chapters and the preamble.
 
 Authored chapters may reference the canonical formalism atlas and numerical
-formal-kernel dashboard under `../docs/`. The renderer validates those
+formal-kernel dashboard in the parent `docs/` directory. The renderer validates those
 references before creating a build and rewrites them to build-local `assets/`
 copies, so an exported manuscript never depends on the checkout-relative
 preview path. The atlas visualizes authored relations and import dependencies;
@@ -51,7 +51,7 @@ native, declaration, Python, and browser receipts bind the frozen v1.1.0
 release snapshot only — the accepted post-v1.1.0 Horizon 1/Horizon 2 source
 wave invalidated their current-source binding; the coordinated refresh
 completed deterministically on 2026-09-12 and is recorded in
-[CHANGELOG.md](../CHANGELOG.md). The
+[CHANGELOG.md](../../CHANGELOG.md). The
 retained 50-topic provider receipt remains historical.
 `04j_horizon2_smooth_stochastic_kernel.md` completes the ordered sequence,
 carrying the kernel onto the Horizon-2 smooth and stochastic foundations.
@@ -62,13 +62,13 @@ control, and stochastic mechanics. It compares selected result families from
 the pinned OpenAI mathematics corpus and distinguishes editorial affinities
 from checked relations. Its reproducible inventory, mathematical profiles,
 and boundary diagnostics live in the
-[modular methods slice](../specs/openai-math-methods/README.md).
+[modular methods slice](../../specs/openai-math-methods/README.md).
 
 Supplement A develops nine worked result passports, eight proposed
 mathematical packets, Lean-to-language analysis, and twelve deterministic
 publication figures, including a common FEP/OpenAI feature embedding. The
-[portable guide](../docs/mathematical-methods.md) explains the installed API and
-[offline explorer](../docs/mathematical-positioning/mathematical-map.html).
+[portable guide](../mathematical-methods.md) explains the installed API and
+[offline explorer](../mathematical-positioning/mathematical-map.html).
 Prepare the visual source and cited PNGs before rendering:
 
 ```bash

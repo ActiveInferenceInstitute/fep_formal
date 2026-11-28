@@ -68,7 +68,7 @@ def test_every_manuscript_token_has_a_producer(
     assert flat, "manuscript_vars must be non-empty"
 
     referenced: set[str] = set()
-    for md_file in (PROJ / "manuscript").glob("*.md"):
+    for md_file in (PROJ / "docs" / "manuscript").glob("*.md"):
         if md_file.name in SKIP:
             continue
         for match in re.finditer(
@@ -92,7 +92,7 @@ def test_manuscript_vars_yaml_is_current(
     catalogue = FEPTopicCatalogue.from_yaml(PROJ / "config" / "topics.yaml")
     fresh = build_manuscript_vars(catalogue, PROJ)
     committed = yaml.safe_load(
-        (PROJ / "manuscript" / "manuscript_vars.yaml").read_text(encoding="utf-8")
+        (PROJ / "docs" / "manuscript" / "manuscript_vars.yaml").read_text(encoding="utf-8")
     )
     fresh_keys = set(_flatten(fresh))
     committed_keys = set(_flatten(committed))

@@ -73,7 +73,7 @@ and fails on stale projections, warnings, compiler errors, timeouts, or
 
 Successful pipeline runs write a timestamped report containing Markdown, JSON,
 a verification manifest, and SHA-256 hashes. Catalog generation writes
-`manuscript/manuscript_vars.yaml` and the unified appendix. Rendering writes
+`docs/manuscript/manuscript_vars.yaml` and the unified appendix. Rendering writes
 resolved chapters to `output/manuscript/` without changing authored Markdown.
 Generated files are never evidence by themselves: native claims require a
 validated native receipt, and Hermes/OpenGauss claims require an independently

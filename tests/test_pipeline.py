@@ -68,8 +68,8 @@ def test_real_catalogue_writes_only_the_private_project(
         "specs/lean-workspace/workspace.py",
         "specs/openai-math-methods/positioning.yaml",
     }
-    variables = catalogue_project / "manuscript/manuscript_vars.yaml"
-    appendix = catalogue_project / "manuscript/09z_unified_formalism_catalogue.md"
+    variables = catalogue_project / "docs/manuscript/manuscript_vars.yaml"
+    appendix = catalogue_project / "docs/manuscript/09z_unified_formalism_catalogue.md"
     assert not variables.exists()
     assert not appendix.exists()
     monkeypatch.setenv("FEP_FORMAL_OUTPUT_ROOT", str(tmp_path / "products"))

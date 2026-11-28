@@ -2,7 +2,7 @@
 
 This slice places the canonical FEP Formal catalogue in overlapping mathematical
 domains and preserves the contracts that make each association meaningful. It
-supports the [manuscript supplement](../../manuscript/08b_mathematical_positioning_supplement.md)
+supports the [manuscript supplement](../../docs/manuscript/08b_mathematical_positioning_supplement.md)
 and [upstream review](REVIEW.md). The upstream OpenAI repository is a research
 corpus; the integration is an optional source-reference workflow, with the
 reviewed revision recorded in [upstream.lock.json](upstream.lock.json).

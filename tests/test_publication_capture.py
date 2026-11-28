@@ -62,15 +62,15 @@ def test_publication_capture_plan_is_process_free(
     )
     assert render.dependencies == ("native", "formalism-audit")
     assert python.dependencies == ("render",)
-    variables = str(PROJ / "manuscript/manuscript_vars.yaml")
-    appendix = str(PROJ / "manuscript/09z_unified_formalism_catalogue.md")
+    variables = str(PROJ / "docs/manuscript/manuscript_vars.yaml")
+    appendix = str(PROJ / "docs/manuscript/09z_unified_formalism_catalogue.md")
     cache = str(PROJ / "output/.cache/tests_collected.json")
     assert {variables, appendix, cache} <= set(native.outputs)
     assert not {variables, appendix, cache} & set(native.inputs)
     assert {variables, appendix, cache} <= set(render.inputs) & set(python.inputs)
     assert not set(python.outputs) & set(render.inputs)
     assert str(PROJ / "CITATION.cff") in native.inputs
-    assert str(PROJ / "manuscript/assets/graphical-abstract.png") in native.inputs
+    assert str(PROJ / "docs/manuscript/assets/graphical-abstract.png") in native.inputs
     assert str(PROJ / "docs/render-acceptance.json") in python.inputs
     assert str(PROJ / "docs/render-fonts.json") in python.inputs
 
@@ -84,7 +84,7 @@ def test_publication_capture_missing_projection_pair_rejects_before_tools(
     from fep_formal.output.release_bundle._core import plan_publication_capture
 
     root = tmp_path / "project"
-    manuscript = root / "manuscript"
+    manuscript = root / "docs" / "manuscript"
     manuscript.mkdir(parents=True)
     for name in ("manuscript_vars.yaml", "09z_unified_formalism_catalogue.md"):
         if name != missing:
@@ -204,7 +204,7 @@ def test_publication_capture_projects_final_native_values_and_rejects_stale_valu
     monkeypatch.setattr(manuscript, "build_manuscript_vars", variables)
     # Use the real transactional pair writer, serializer and drift validator.
     manuscript.write_manuscript_vars(tmp_path)
-    old = (tmp_path / "manuscript/manuscript_vars.yaml").read_bytes()
+    old = (tmp_path / "docs/manuscript/manuscript_vars.yaml").read_bytes()
 
     def final_native(*_args, **_kwargs):
         receipt.write_text(json.dumps({"duration_s": 17.875}))
@@ -217,7 +217,7 @@ def test_publication_capture_projects_final_native_values_and_rejects_stale_valu
         )
         == 0
     )
-    projection = tmp_path / "manuscript/manuscript_vars.yaml"
+    projection = tmp_path / "docs/manuscript/manuscript_vars.yaml"
     current = yaml.safe_load(projection.read_text())
     assert current["verify"]["duration_seconds"] == 17.875
     assert projection.read_bytes() != old
@@ -226,7 +226,7 @@ def test_publication_capture_projects_final_native_values_and_rejects_stale_valu
     elif mutation == "compile_rate":
         current["compile_rate"]["total"] = "0%"
     elif mutation == "appendix":
-        (tmp_path / "manuscript/09z_unified_formalism_catalogue.md").write_text(
+        (tmp_path / "docs/manuscript/09z_unified_formalism_catalogue.md").write_text(
             "stale appendix\n"
         )
     elif mutation == "source_date":
@@ -1282,7 +1282,7 @@ def test_publication_capture_plan_owns_every_render_asset_and_generated_collecti
         resolved = str(PROJ / "output/manuscript" / destination)
         assert resolved in render.outputs and resolved in bundle.inputs
     for name in ("config.yaml", "preamble.md", "references.bib"):
-        assert str(PROJ / "manuscript" / name) in render.inputs
+        assert str(PROJ / "docs" / "manuscript" / name) in render.inputs
         resolved = str(PROJ / "output/manuscript" / name)
         assert resolved in render.outputs and resolved in bundle.inputs
     cache = str(PROJ / "output/.cache/tests_collected.json")
@@ -1302,7 +1302,7 @@ def test_publication_capture_real_renderer_asset_source_mutation_rejects(
     from fep_formal.output.rendering import MANUSCRIPT_ASSETS
 
     root = tmp_path / "project"
-    manuscript = root / "manuscript"
+    manuscript = root / "docs" / "manuscript"
     manuscript.mkdir(parents=True)
     chapter = manuscript / "01_chapter.md"
     chapter.write_text("A disposable chapter.\n")

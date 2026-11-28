@@ -49,7 +49,7 @@ receipt alone. The committed receipt is the gate that keeps a source change
 edited without a fresh render from merging.
 
 The version-2 receipt binds every typeset manuscript source, including
-`manuscript/preamble.md`, plus the cover configuration and bibliography, so
+`docs/manuscript/preamble.md`, plus the cover configuration and bibliography, so
 changing these inputs without a fresh render fails CI. The digest binds the byte-exact generated appendix too
 (e.g. `09z_unified_formalism_catalogue.md`), so a `src/` count change that
 regenerates it via `fep-formal catalogue` moves the digest and stales the
@@ -78,10 +78,10 @@ the cited-figure map lives in `fep_formal.output.svg_raster`.
 
 `build_graphical_abstract.py` is the graphical abstract's producer (thin
 wrapper over `fep_formal.output.graphical_abstract`): it regenerates the
-sha256-pinned canonical asset `manuscript/assets/graphical-abstract.png`
+sha256-pinned canonical asset `docs/manuscript/assets/graphical-abstract.png`
 byte-deterministically as an 8-bit non-interlaced RGB PNG, and `--check`
 validates the committed asset against its config pin without writing. A new
-digest must be recorded in `manuscript/config.yaml` in the same change; the
+digest must be recorded in `docs/manuscript/config.yaml` in the same change; the
 validator fails closed on any mismatch. Never hand-edit the PNG or let any
 other tool write it: the pinned digest must keep describing pixels this
 producer generated.

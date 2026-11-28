@@ -10,7 +10,7 @@ fail-closed acceptance for a combined PDF build and must be run after
 Continuous integration renders this manuscript end-to-end: the ``render`` job
 in ``.github/workflows/ci.yml`` checks out the shared template at its pinned
 ref, installs XeLaTeX, pandoc, ``rsvg-convert``, the mermaid CLI and the two
-faces ``manuscript/preamble.md`` selects, renders, and then re-runs this
+faces ``docs/manuscript/preamble.md`` selects, renders, and then re-runs this
 acceptance's verification against the fresh result.  ``--receipt`` writes what
 it found into a committed file and ``--verify-receipt`` re-reads it, so a
 chapter edited without a fresh render leaves the receipt naming a digest the
@@ -100,7 +100,7 @@ def main(argv: list[str] | None = None) -> int:
     manuscript_dir = (
         args.manuscript_dir
         if args.manuscript_dir is not None
-        else project_root / "manuscript"
+        else project_root / "docs" / "manuscript"
     )
     results = render_log_defects(pdf_dir)
     failed = False
@@ -221,7 +221,7 @@ def verify_receipt(project_root: Path, args: argparse.Namespace) -> int:
     manuscript_dir = (
         args.manuscript_dir
         if args.manuscript_dir is not None
-        else project_root / "manuscript"
+        else project_root / "docs" / "manuscript"
     )
     defects = receipt_defects(receipt, manuscript_dir)
     for line in defects:

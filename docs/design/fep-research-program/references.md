@@ -19,8 +19,8 @@ project can use.
 - [v1.1.0 expansion record](../../../specs/done/formalism-catalogue-155/README.md)
   — why the released cut stops at finite risk, policy trees, native blankets,
   scalar exponential families, and a two-state CTMC.
-- [Manuscript limitations](../../../manuscript/05e_broader_impact_limitations.md)
-  and [conclusion](../../../manuscript/06_conclusion.md) — source of the open
+- [Manuscript limitations](../../manuscript/05e_broader_impact_limitations.md)
+  and [conclusion](../../manuscript/06_conclusion.md) — source of the open
   posterior, policy, blanket, geometry, continuous-time, and empirical seams.
 
 ## Free Energy Principle, blankets, and critical boundary
