@@ -213,7 +213,7 @@ the catalogue has not run, the checker prints both lines (paths shortened):
 
 ```text
 FAIL: docs/render-acceptance.json: covers manuscript sources '<recorded>' but this checkout is '<live>'; the shipped render predates these sources -- regenerate the build product with `uv run fep-formal catalogue`; changed since that render: 09z_unified_formalism_catalogue.md (generated appendix)
-FAIL: docs/render-acceptance.json: generated appendix 09z_unified_formalism_catalogue.md is missing under <checkout>/manuscript; the acceptance digest covers the generated appendix, so run `uv run fep-formal catalogue` first
+FAIL: docs/render-acceptance.json: generated appendix 09z_unified_formalism_catalogue.md is missing under <checkout>/docs/manuscript; the acceptance digest covers the generated appendix, so run `uv run fep-formal catalogue` first
 ```
 
 Remedy: run `uv run fep-formal catalogue`, then `--verify-receipt` again. When the
@@ -249,14 +249,9 @@ remain an optional separately requested deliverable; this mode makes no claim
 that slide PDFs were rendered or accepted. Other format settings are unchanged.
 
 The SDK's `ENABLE_PDF` and `ENABLE_SLIDES` environment variables override YAML.
-CI clears both for the render subprocess. Local and installed-wheel trials must
-also remove both from the child environment before invoking the unchanged
-publication entry point, and pass an explicit absolute `--template` checkout
-(or `FEP_FORMAL_TEMPLATE_DIR`) at the pinned SDK revision. Do not rely on an
-editable installation's sibling-template discovery or an unrelated shell
-environment. A portable Python launcher can form the child environment with
-`{k: v for k, v in os.environ.items() if k not in {"ENABLE_PDF", "ENABLE_SLIDES"}}`
-and run the existing entry point with that environment.
+Clear both for the render subprocess so the manuscript configuration controls
+the output formats. Supply the isolated template checkout with `--template`
+or `FEP_FORMAL_TEMPLATE_DIR`.
 
 Combined PDF/TeX/Markdown/log parity, exact-source native and render receipts,
 font registration/cleanup, provenance and scoped PDF visual review remain
@@ -284,22 +279,55 @@ Prerequisites, all matching CI's render job in `.github/workflows/ci.yml`:
   at the versions the workflow installs; `build_render_fonts.py --probe`
   confirms the faces cover the manuscript.
 
+Check whether the current manuscript inputs and native receipt qualify before
+acquiring another template or recompiling Lean:
+
+```bash
+uv run --locked fep-formal catalogue
+uv run --locked python scripts/render_manuscript.py --check
+```
+
+This checks the existing native receipt against the current source owners and
+audits the manuscript's generated values and theorem references. Reuse a
+receipt that passes this check. If the receipt is missing or stale, regenerate
+it with the verification command above, then repeat the two commands. The
+accepted render receipt has a separate source digest and is checked in step 1.
+
 The template path must name the directory that itself contains
 `scripts/pipeline/stage_03_render.py`, not a parent of it. In a docxology
 monorepo layout that is `repos/public/template`, not the docxology root.
 Passing the parent fails immediately with `ERROR: no rendering template
 holding scripts/pipeline/stage_03_render.py was found; tried <path>`, and the
-project symlink belongs under the same directory:
+project symlink belongs under the same directory. From the FEP_Formal root,
+read the template revision directly from the workflow and fetch that commit:
 
 ```bash
-template="$(mktemp -d)/template"
-git clone https://github.com/docxology/template "$template"
-git -C "$template" checkout <ref pinned in .github/workflows/ci.yml>
-mkdir -p "$template/projects/active"
-ln -s "$PWD" "$template/projects/active/fep_lean"
-FEP_FORMAL_TEMPLATE_DIR="$template" uv run python scripts/render_publication.py
-uv run python scripts/build_render_fonts.py --check
-uv run python scripts/check_render_log.py --verify-receipt
+(
+  set -e
+  template_ref="$(uv run --locked python - <<'PYTHON'
+from pathlib import Path
+
+import yaml
+
+workflow = yaml.safe_load(Path(".github/workflows/ci.yml").read_text(encoding="utf-8"))
+steps = workflow["jobs"]["render"]["steps"]
+ref, = (step["with"]["ref"] for step in steps
+        if step.get("with", {}).get("repository") == "docxology/template")
+print(ref)
+PYTHON
+)"
+  template="$(mktemp -d)/template"
+  git init -q "$template"
+  git -C "$template" remote add origin https://github.com/docxology/template.git
+  git -C "$template" fetch --depth 1 origin "$template_ref"
+  git -C "$template" checkout --detach FETCH_HEAD
+  mkdir -p "$template/projects/active"
+  ln -s "$(pwd -P)" "$template/projects/active/fep_lean"
+  unset ENABLE_PDF ENABLE_SLIDES
+  uv run --locked python scripts/render_publication.py --template "$template"
+  uv run --locked python scripts/build_render_fonts.py --check
+  uv run --locked python scripts/check_render_log.py --verify-receipt
+)
 ```
 
 `render_publication.py` exits 0 only when the template's render stage and this

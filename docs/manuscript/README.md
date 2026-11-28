@@ -8,11 +8,12 @@ the version and date that the title page renders. The separate 2.1.0
 manuscript-version DOI is `10.5281/zenodo.23607007`; it names the published
 deposit, not the concept.
 
-The chapters are rendered from this directory with the local Pandoc/XeLaTeX
-toolchain. Run `uv run fep-formal catalogue` first to generate
-`manuscript_vars.yaml` and `09z_unified_formalism_catalogue.md`, then run
-`uv run python scripts/render_manuscript.py --check` or render authored
-chapters into `output/manuscript/` with the same command without `--check`.
+Run `uv run fep-formal catalogue` to generate `manuscript_vars.yaml` and
+`09z_unified_formalism_catalogue.md`. `uv run python scripts/render_manuscript.py
+--check` validates those inputs, the native receipt, and the chapter references.
+The [local render runbook](../../scripts/README.md#local-render-runbook) covers
+hydrating the chapters into `output/manuscript/`, building the combined
+publication with Pandoc and XeLaTeX, and verifying the render receipt.
 
 `config.yaml` contains static metadata. Runtime values are emitted by
 `src/fep_formal/output/manuscript.py`; rendering is source-preserving and any
@@ -20,9 +21,10 @@ unresolved `{{...}}` expression fails before output is written. The generated
 appendix is derived from the validated catalog and contains one Lean block
 and one equation group for every topic.
 
-The cover's top-level `authors` record in `config.yaml` is validated against
-`CITATION.cff`, including Daniel Ari Friedman's affiliation, email and ORCID.
-The renderer prefixes the ORCID link, so this cover field stores the bare ID.
+The renderer reads the cover author's name, affiliation, email, and ORCID
+from the root [`CITATION.cff`](../../CITATION.cff) and adds the `authors`
+record to `output/manuscript/config.yaml`. The projected record carries the
+bare ORCID ID, which the template uses to construct the link.
 `autoEqnLabels: true` in the first chapter's metadata numbers every displayed
 equation across the combined edition. Explicit equation labels remain usable
 for cross-references; inline mathematics and code examples are unaffected.
@@ -86,9 +88,9 @@ Current-source native proof, publication
 render acceptance and hosted version release still require their own checks.
 
 Inline Mermaid figures require the installed Mermaid CLI and a browser that
-the pinned template can resolve. Use the CLI version declared by that
-template's `package-lock.json` and put its `node_modules/.bin` first on the
-render invocation's `PATH`; a different CLI can reject the renderer's flags.
+the pinned template can resolve. Use the CLI version installed by the
+[publication workflow](../../.github/workflows/ci.yml) and put its `mmdc` on
+the render invocation's `PATH`.
 For a local macOS render, set
 `CHROME_EXECUTABLE_PATH` to the installed browser executable for that
 invocation when automatic resolution does not find the application bundle.
