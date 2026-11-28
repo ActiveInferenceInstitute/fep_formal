@@ -4,8 +4,8 @@
 `.github/workflows/ci.yml`. This repository has no `.github/gnn-pin.json`; its
 custody record is `specs/gnn-bridge-w2-source-custody/source-pin.json`
 (schema_version 1), whose `gnn` entry names commit
-`c44896439ad8e2e2b50ef99f519182550098807e` (the GNN integration source checkpoint, package
-version 5.1.0; no release tag names it, so the record carries no `tag`) and
+`1e3235b06aab576369a522b1dd330692e0457390` (the GNN 5.2.0 candidate source
+checkpoint; the compound pin records a commit without a `tag`) and
 the SHA-256 of six GNN owner
 files (`pyproject.toml`, `uv.lock`, `src/gnn/main.py`,
 `src/gnn/pipeline/step_registry.py`, `docs/gnn/gnn_syntax.md` and
@@ -50,7 +50,8 @@ predates `src/gnn/importers.py` (`e6a9d3917`), so neither the module nor
 newer checkout was diagnostic only. The pin then named `v5.1.0` at
 `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, the first release carrying the
 reader. The custody record subsequently named `2001b94fe6f55f7532619d8d53bb28c705997a94`
-and now names `c44896439ad8e2e2b50ef99f519182550098807e`.
+and the integration checkpoint `c44896439ad8e2e2b50ef99f519182550098807e`.
+It now names `1e3235b06aab576369a522b1dd330692e0457390`.
 `bash scripts/gate.sh gnn` installs the current revision and runs:
 
 ```bash
