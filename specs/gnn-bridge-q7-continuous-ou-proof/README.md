@@ -366,3 +366,16 @@ The scaffold serialization matched across CPython 3.11–3.14. A fresh Lean
 statements with standard axioms. The receipt covers the static binary64
 coefficient and real-arithmetic prediction bounds for this source pair.
 [Native receipt](native_receipt_20261128_fep40e9859_gnnc4489643.json)
+
+## GNN 5.2.0 candidate source-pair checkpoint
+
+The refreshed bridge and Q7 projections bind FEP source
+`440bcaa0eeb4f7948b774ef9c118f83adbb61719` and GNN source
+`1e3235b06aab576369a522b1dd330692e0457390`.
+[GNN candidate source checkpoint](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/tree/1e3235b06aab576369a522b1dd330692e0457390)
+
+Canonical scaffold serialization matched across CPython 3.11–3.14. Lean
+4.36.0 and the pinned Mathlib compiled all twelve static Q7 statements
+with standard axioms. An independent retained check validated the new
+receipt against the same source pair.
+[Native receipt](native_receipt_20261128_fep440bcaa_gnn1e3235b.json)

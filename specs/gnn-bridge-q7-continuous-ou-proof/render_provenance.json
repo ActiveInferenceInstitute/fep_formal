@@ -7,13 +7,13 @@
     "python",
     "-c",
     "\nimport sys\nfrom pathlib import Path\nfrom gnn.extract.pomdp_extractor import extract_pomdp_from_file\nfrom gnn.render.pomdp_processor import POMDPRenderProcessor\nfrom gnn.render.processor import render_gnn_spec\nsource, output = map(Path, sys.argv[1:])\nmodel = extract_pomdp_from_file(source, strict_validation=True)\nif model is None:\n    raise RuntimeError('canonical extraction failed')\nspec = POMDPRenderProcessor(output)._pomdp_to_gnn_spec(model)\nok, message, artifacts = render_gnn_spec(spec, 'jax', output)\nif not ok:\n    raise RuntimeError(message)\nprint(message)\n",
-    "/dev/shm/fep-q7-final-run.KqeltrCg/q7-render-0if5ydzy/FepLeanContinuousOU.md",
-    "/dev/shm/fep-q7-final-run.KqeltrCg/q7-render-0if5ydzy/rendered"
+    "/dev/shm/fep-q7-v520-run.NCrJc3PI/q7-render-yfbb3g7b/FepLeanContinuousOU.md",
+    "/dev/shm/fep-q7-v520-run.NCrJc3PI/q7-render-yfbb3g7b/rendered"
   ],
   "evidence_plane": "canonical GNN render (no runner execution)",
   "input": {
     "path": "specs/gnn-bridge-p4b-continuous-emission/gnn-input/FepLeanContinuousOU.md",
-    "sha256": "2f04dccca818ff45ed69a5dfeca6192ba9872248e4a1ab2bf30676ba8e4069e2"
+    "sha256": "9509f7250acbe70867e0a27065293086cb1b79464d89672966f4f34500cd4863"
   },
   "output": {
     "path": "specs/gnn-bridge-q7-continuous-ou-proof/fixtures/continuous_ou_jax.py",
@@ -344,10 +344,10 @@
     "gnn": {
       "docs/gnn/gnn_syntax.md": "c12f97444e7e5afc6cbfd9838c308e3ca593283a67ccc94a43a31fe816a276a4",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "50aaba64374b49ca7ce3a1831e583aabc81eb07cdfd8264c3b69981c12100b2b",
+      "pyproject.toml": "84d41f135deb844f7c7926a1280c6b1b9165246342ff1feb8c8be4af03aab92d",
       "src/gnn/main.py": "0cc97329773d681cacef176048157bf4c561f88c0be1960174cc1248c783e72a",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "4924d9ed88c434794186f99d7610f4ba20c1de0ebd34f0663be70e5b1e7057bf"
+      "uv.lock": "e529c1da8cf819650e8505c5237b3fd774c0de1c39054ab48f43583ef8491315"
     }
   },
   "owners_before": {
@@ -675,10 +675,10 @@
     "gnn": {
       "docs/gnn/gnn_syntax.md": "c12f97444e7e5afc6cbfd9838c308e3ca593283a67ccc94a43a31fe816a276a4",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "50aaba64374b49ca7ce3a1831e583aabc81eb07cdfd8264c3b69981c12100b2b",
+      "pyproject.toml": "84d41f135deb844f7c7926a1280c6b1b9165246342ff1feb8c8be4af03aab92d",
       "src/gnn/main.py": "0cc97329773d681cacef176048157bf4c561f88c0be1960174cc1248c783e72a",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "4924d9ed88c434794186f99d7610f4ba20c1de0ebd34f0663be70e5b1e7057bf"
+      "uv.lock": "e529c1da8cf819650e8505c5237b3fd774c0de1c39054ab48f43583ef8491315"
     }
   },
   "render_route": [
@@ -688,7 +688,7 @@
   ],
   "returncode": 0,
   "schema_version": 1,
-  "source_pin_sha256": "cec2f5285fa5cbbd5f1a0483830df5cb88488b8562b8197d4e0bcde25c2efe01",
+  "source_pin_sha256": "1937d8890231337f7f59a440c780d1b4209573811db52b87ea67f58a0c089612",
   "stderr": "warning: Found both a `uv.toml` file and a `[tool.uv]` section in an adjacent `pyproject.toml`. The following fields from `[tool.uv]` will be ignored in favor of the `uv.toml` file:\n- constraint-dependencies\n",
   "stdout": "JAX continuous LGSSM generated successfully.\n"
 }

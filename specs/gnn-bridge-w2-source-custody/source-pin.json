@@ -1,6 +1,6 @@
 {
   "fep_lean": {
-    "commit": "40e985910fe413f6355a75b706ec48ffeb29ea9f",
+    "commit": "440bcaa0eeb4f7948b774ef9c118f83adbb61719",
     "owners": {
       "compat/fep-lean/pyproject.toml": "71807dc84fc3473512f89116e4d32c4319d6f73dde4cfbec39fcd5c19c701b06",
       "docs/design/gnn-bridge/bridge-contract.md": "8bfa57cb73f13b92e3874f81afefa7cce8f8d1ed4c41da532801bd9052c7a1c6",
@@ -324,14 +324,14 @@
     }
   },
   "gnn": {
-    "commit": "c44896439ad8e2e2b50ef99f519182550098807e",
+    "commit": "1e3235b06aab576369a522b1dd330692e0457390",
     "owners": {
       "docs/gnn/gnn_syntax.md": "c12f97444e7e5afc6cbfd9838c308e3ca593283a67ccc94a43a31fe816a276a4",
       "docs/other/fep_lean/bridge-contract.md": "66ca4b504afd2d25ffe57b2a3380aac9ac8dc8be0665f881cda1e6ad84a92916",
-      "pyproject.toml": "50aaba64374b49ca7ce3a1831e583aabc81eb07cdfd8264c3b69981c12100b2b",
+      "pyproject.toml": "84d41f135deb844f7c7926a1280c6b1b9165246342ff1feb8c8be4af03aab92d",
       "src/gnn/main.py": "0cc97329773d681cacef176048157bf4c561f88c0be1960174cc1248c783e72a",
       "src/gnn/pipeline/step_registry.py": "023c091b73a6a76a8d0344c40d1b33e8e03f79a8168171c655de7a3e71339144",
-      "uv.lock": "4924d9ed88c434794186f99d7610f4ba20c1de0ebd34f0663be70e5b1e7057bf"
+      "uv.lock": "e529c1da8cf819650e8505c5237b3fd774c0de1c39054ab48f43583ef8491315"
     }
   },
   "schema_version": 1
