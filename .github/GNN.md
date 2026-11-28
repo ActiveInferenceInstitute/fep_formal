@@ -4,13 +4,14 @@
 `.github/workflows/ci.yml`. This repository has no `.github/gnn-pin.json`; its
 custody record is `specs/gnn-bridge-w2-source-custody/source-pin.json`
 (schema_version 1), whose `gnn` entry names commit
-`2001b94fe6f55f7532619d8d53bb28c705997a94` (the paired GNN `main` source checkpoint, package
+`c44896439ad8e2e2b50ef99f519182550098807e` (the GNN integration source checkpoint, package
 version 5.1.0; no release tag names it, so the record carries no `tag`) and
 the SHA-256 of six GNN owner
 files (`pyproject.toml`, `uv.lock`, `src/gnn/main.py`,
 `src/gnn/pipeline/step_registry.py`, `docs/gnn/gnn_syntax.md` and
 `docs/other/fep_lean/bridge-contract.md`). The `fep_lean` entry seals this
-repository's own owner bytes separately.
+repository's own owner bytes separately. Update this pointer when the
+`gnn.commit` in the custody record changes.
 
 The job uses the pinned `actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1`
 (v7.0.1), `astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2`
@@ -48,8 +49,9 @@ predates `src/gnn/importers.py` (`e6a9d3917`), so neither the module nor
 `git show 2778e65c:src/gnn/importers.py` fails, and a checker run against a
 newer checkout was diagnostic only. The pin then named `v5.1.0` at
 `75c834bd8519dc7b5adc4d24f16bf393cfd1ecdf`, the first release carrying the
-reader, and now names `2001b94fe6f55f7532619d8d53bb28c705997a94`, so
-`bash scripts/gate.sh gnn` installs that revision and runs it:
+reader. The custody record subsequently named `2001b94fe6f55f7532619d8d53bb28c705997a94`
+and now names `c44896439ad8e2e2b50ef99f519182550098807e`.
+`bash scripts/gate.sh gnn` installs the current revision and runs:
 
 ```bash
 python -m gnn.importers check --repo . \
@@ -60,7 +62,7 @@ python -m gnn.importers check --repo . \
 The arm installs the package from the pinned commit rather than from a checkout
 (`uv run --with "generalized-notation-notation @ git+https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation@<pinned commit>"`,
 where the commit is read from the pin), so the pin reader, the pointer rules and
-the specification parser are the ones `2001b94f` ships.
+the specification parser are the ones shipped by the current revision.
 
 The reader reports one warning, `pin-schema-unversioned`: a two-party custody
 pin keeps `schema_version: 1` plus per-file owner digests, so it does not
