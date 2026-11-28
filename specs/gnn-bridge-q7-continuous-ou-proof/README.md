@@ -352,3 +352,17 @@ and drops EOL Python 3.10 from candidate serialization and source-pair CI.
 The accepted serialization schema and canonical bytes are unchanged. Historical
 five-runtime observations above retain their dates and evidence boundaries.
 Current native qualification remains separate from these static observations.
+
+## GNN integration source-pair checkpoint
+
+This checkpoint binds FEP source
+`40e985910fe413f6355a75b706ec48ffeb29ea9f` and GNN source
+`c44896439ad8e2e2b50ef99f519182550098807e`. Both bridge emissions
+and the canonical Q7 render were regenerated from that pair.
+[GNN source checkpoint](https://github.com/ActiveInferenceInstitute/Generalized_Notation_Notation/tree/c44896439ad8e2e2b50ef99f519182550098807e)
+
+The scaffold serialization matched across CPython 3.11–3.14. A fresh Lean
+4.36.0 compile and an independent retained check validated all twelve Q7
+statements with standard axioms. The receipt covers the static binary64
+coefficient and real-arithmetic prediction bounds for this source pair.
+[Native receipt](native_receipt_20261128_fep40e9859_gnnc4489643.json)
